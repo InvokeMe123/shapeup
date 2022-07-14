@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "410412901682",
+    "project_id": "shapeup-b4561",
+    "storage_bucket": "shapeup-b4561.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:410412901682:android:0e44b9bac7d9273c88232b",
+        "android_client_info": {
+          "package_name": "com.example.shapeup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "410412901682-a4q1m9na0ms59237gn5s9h89f0bitmp1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shapeup",
+            "certificate_hash": "8178d260088d7628050938c93dd3af44964faa56"
+          }
+        },
+        {
+          "client_id": "410412901682-elorh2hcm6ajea9v7h9rg45ajh8cg389.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBK_EhANQ69yrhF9AANDtxYBt9FEdT0EjQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "410412901682-elorh2hcm6ajea9v7h9rg45ajh8cg389.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
