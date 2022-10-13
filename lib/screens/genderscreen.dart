@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shapeup/components/gendercard.dart';
 import 'package:shapeup/screens/weightscreen.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class GenderScreen extends StatefulWidget {
   const GenderScreen({Key? key}) : super(key: key);
@@ -17,6 +19,13 @@ enum Gender {
 }
 
 class _GenderScreenState extends State<GenderScreen> {
+  User? user = FirebaseAuth.instance.currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   late Gender selectedGender = Gender.male;
   @override
   Widget build(BuildContext context) {
@@ -111,14 +120,19 @@ class _GenderScreenState extends State<GenderScreen> {
                         SizedBox(
                           width: 180,
                           child: ElevatedButton(
-                            onPressed: () => {
-                              Navigator.push(
-                                  context,
-                                  PageTransition(
-                                    type: PageTransitionType.rightToLeft,
-                                    duration: const Duration(milliseconds: 250),
-                                    child: const WeightScreen(),
-                                  )),
+                            onPressed: () async => {
+                              await FirebaseFirestore.instance
+                                  .collection('profile')
+                                  .doc(user?.uid)
+                                  .update({
+                                'gender': selectedGender.name,
+                              }).then((value) => Navigator.pushReplacement(
+                                      context,
+                                      PageTransition(
+                                          type: PageTransitionType.fade,
+                                          duration:
+                                              const Duration(milliseconds: 250),
+                                          child: const WeightScreen())))
                             },
                             style: ElevatedButton.styleFrom(
                                 elevation: 0,

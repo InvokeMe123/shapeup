@@ -1,9 +1,11 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, avoid_print, duplicate_ignore
 
-import 'dart:async';
+import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shapeup/screens/dashboardscreen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SettingUpScreen extends StatefulWidget {
   const SettingUpScreen({Key? key}) : super(key: key);
@@ -13,18 +15,46 @@ class SettingUpScreen extends StatefulWidget {
 }
 
 class _SettingUpScreenState extends State<SettingUpScreen> {
+  User? user = FirebaseAuth.instance.currentUser;
+  int? height;
+  int? weight;
+  double bmi = 0;
+
   @override
   void initState() {
-    Timer(
-        const Duration(seconds: 3),
-        () => Navigator.pushReplacement(
-              context,
-              PageTransition(
-                type: PageTransitionType.fade,
-                duration: const Duration(milliseconds: 300),
-                child: const DashBoardScreen(),
-              ),
-            ));
+//     var querySnapshot = FirebaseFirestore.instance.collection('profile').doc(user?.uid).get();
+
+// for (var queryDocumentSnapshot in collection.) {
+//   Map<String, dynamic> data = queryDocumentSnapshot.data();
+//   var name = data['name'];
+//   var phone = data['phone'];
+
+    FirebaseFirestore.instance
+        .collection('profile')
+        .doc(user?.uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        Map<String, dynamic> data =
+            documentSnapshot.data() as Map<String, dynamic>;
+        weight = int.tryParse(data['weight']);
+        height = int.tryParse(data['height']);
+        print(height);
+        print(weight);
+        bmi = (weight! / pow(height! / 100, 2));
+        print(bmi);
+      } else {
+        print('Document does not exist on the database');
+      }
+      FirebaseFirestore.instance.collection('profile').doc(user?.uid).update({
+        'BMI': bmi,
+      }).then((value) => Navigator.pushReplacement(
+          context,
+          PageTransition(
+              type: PageTransitionType.fade,
+              duration: const Duration(milliseconds: 250),
+              child: const DashBoardScreen())));
+    });
 
     super.initState();
   }

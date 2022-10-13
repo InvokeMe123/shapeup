@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shapeup/screens/genderscreen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AgeScreen extends StatefulWidget {
   const AgeScreen({Key? key}) : super(key: key);
@@ -12,6 +13,8 @@ class AgeScreen extends StatefulWidget {
 }
 
 class _AgeScreenState extends State<AgeScreen> {
+  User? user = FirebaseAuth.instance.currentUser;
+
   final _ageController = TextEditingController();
 
   var authName = '';
@@ -129,14 +132,19 @@ class _AgeScreenState extends State<AgeScreen> {
                         SizedBox(
                           width: 180,
                           child: ElevatedButton(
-                            onPressed: () => {
-                              Navigator.push(
-                                  context,
-                                  PageTransition(
-                                    type: PageTransitionType.rightToLeft,
-                                    duration: const Duration(milliseconds: 250),
-                                    child: const GenderScreen(),
-                                  )),
+                            onPressed: () async => {
+                              await FirebaseFirestore.instance
+                                  .collection('profile')
+                                  .doc(user?.uid)
+                                  .set({
+                                'age': _ageController.text,
+                              }).then((value) => Navigator.pushReplacement(
+                                      context,
+                                      PageTransition(
+                                          type: PageTransitionType.fade,
+                                          duration:
+                                              const Duration(milliseconds: 250),
+                                          child: const GenderScreen())))
                             },
                             style: ElevatedButton.styleFrom(
                                 elevation: 0,

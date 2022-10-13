@@ -1,4 +1,4 @@
-package com.example.shapeup
+package com.app.shapeup
 
 import io.flutter.embedding.android.FlutterActivity
 

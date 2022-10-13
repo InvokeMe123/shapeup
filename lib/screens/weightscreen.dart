@@ -1,8 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shapeup/screens/heightscreen.dart';
-// import 'package:shapeup/screens/settingScreen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class WeightScreen extends StatefulWidget {
   const WeightScreen({Key? key}) : super(key: key);
@@ -12,6 +13,8 @@ class WeightScreen extends StatefulWidget {
 }
 
 class _WeightScreenState extends State<WeightScreen> {
+  User? user = FirebaseAuth.instance.currentUser;
+
   final _weightController = TextEditingController();
 
   @override
@@ -112,13 +115,20 @@ class _WeightScreenState extends State<WeightScreen> {
                         SizedBox(
                           width: 180,
                           child: ElevatedButton(
-                            onPressed: () => Navigator.push(
-                                context,
-                                PageTransition(
-                                  type: PageTransitionType.rightToLeft,
-                                  duration: const Duration(milliseconds: 250),
-                                  child: const HeightScreen(),
-                                )),
+                            onPressed: () async => {
+                              await FirebaseFirestore.instance
+                                  .collection('profile')
+                                  .doc(user?.uid)
+                                  .update({
+                                'weight': _weightController.text,
+                              }).then((value) => Navigator.pushReplacement(
+                                      context,
+                                      PageTransition(
+                                          type: PageTransitionType.fade,
+                                          duration:
+                                              const Duration(milliseconds: 250),
+                                          child: const HeightScreen())))
+                            },
                             style: ElevatedButton.styleFrom(
                                 elevation: 0,
                                 primary:

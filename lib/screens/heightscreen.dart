@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shapeup/screens/settingScreen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HeightScreen extends StatefulWidget {
   const HeightScreen({Key? key}) : super(key: key);
@@ -11,6 +13,8 @@ class HeightScreen extends StatefulWidget {
 }
 
 class _HeightScreenState extends State<HeightScreen> {
+  User? user = FirebaseAuth.instance.currentUser;
+
   final _heightController = TextEditingController();
 
   @override
@@ -75,7 +79,7 @@ class _HeightScreenState extends State<HeightScreen> {
                               padding: const EdgeInsets.only(
                                   left: 20, right: 20, bottom: 10, top: 10),
                               child: Text(
-                                "inch",
+                                "cm",
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.montserrat(
                                     letterSpacing: .5,
@@ -111,13 +115,20 @@ class _HeightScreenState extends State<HeightScreen> {
                         SizedBox(
                           width: 180,
                           child: ElevatedButton(
-                            onPressed: () => Navigator.pushReplacement(
-                                context,
-                                PageTransition(
-                                  type: PageTransitionType.fade,
-                                  duration: const Duration(milliseconds: 300),
-                                  child: const SettingUpScreen(),
-                                )),
+                            onPressed: () async => {
+                              await FirebaseFirestore.instance
+                                  .collection('profile')
+                                  .doc(user?.uid)
+                                  .update({
+                                'height': _heightController.text,
+                              }).then((value) => Navigator.pushReplacement(
+                                      context,
+                                      PageTransition(
+                                          type: PageTransitionType.fade,
+                                          duration:
+                                              const Duration(milliseconds: 250),
+                                          child: const SettingUpScreen())))
+                            },
                             style: ElevatedButton.styleFrom(
                                 elevation: 0,
                                 primary:

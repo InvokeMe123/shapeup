@@ -1,20 +1,20 @@
 class Profile {
-  Profile({
-    this.userAge,
-    this.userGender,
-    this.userHeight,
-    this.userWeight,
-  });
-  dynamic userAge;
-  dynamic userGender;
-  dynamic userHeight;
-  dynamic userWeight;
+  String age;
+  String gender;
+  String height;
+  String weight;
 
-  set setUserAge(String userAge) {
-    userAge = userAge;
-  }
+  Profile(
+    this.age,
+    this.gender,
+    this.height,
+    this.weight,
+  );
 
-  get getUserAge {
-    return userAge;
-  }
+  Map<String, dynamic> toJson() => {
+        'age': age,
+        'gender': gender,
+        'height': height,
+        'userWeight': weight,
+      };
 }
