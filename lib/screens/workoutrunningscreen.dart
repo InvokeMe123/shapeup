@@ -100,7 +100,7 @@ class _WorkoutRunningScreenState extends State<WorkoutRunningScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      FlatButton(
+                      TextButton(
                         onPressed: () {},
                         child: Text(
                           "Previous",
@@ -110,7 +110,7 @@ class _WorkoutRunningScreenState extends State<WorkoutRunningScreen> {
                               fontWeight: FontWeight.w600),
                         ),
                       ),
-                      FlatButton(
+                      TextButton(
                         onPressed: () {},
                         child: Text(
                           "Skip",

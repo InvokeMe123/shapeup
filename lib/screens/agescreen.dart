@@ -121,7 +121,7 @@ class _AgeScreenState extends State<AgeScreen> {
                                 focusedBorder: UnderlineInputBorder(
                                     borderSide:
                                         BorderSide(color: Colors.black)),
-                                labelText: 'Password',
+                                labelText: 'age',
                                 focusColor: Colors.black,
                                 labelStyle: TextStyle(color: Colors.white)),
                           ),
@@ -133,6 +133,8 @@ class _AgeScreenState extends State<AgeScreen> {
                           width: 180,
                           child: ElevatedButton(
                             onPressed: () async => {
+                              // ignore: avoid_print
+                              print(_ageController.text),
                               await FirebaseFirestore.instance
                                   .collection('profile')
                                   .doc(user?.uid)

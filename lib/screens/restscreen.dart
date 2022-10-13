@@ -1,7 +1,5 @@
 import "package:flutter/material.dart";
 import 'package:google_fonts/google_fonts.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:shapeup/screens/notificationscreen.dart';
 
 class RestScreen extends StatefulWidget {
   const RestScreen({Key? key}) : super(key: key);
@@ -44,7 +42,7 @@ class _RestScreenState extends State<RestScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        FlatButton(
+                        TextButton(
                           onPressed: () {},
                           child: Text(
                             "Add +20s",
@@ -54,7 +52,7 @@ class _RestScreenState extends State<RestScreen> {
                                 fontWeight: FontWeight.w600),
                           ),
                         ),
-                        FlatButton(
+                        TextButton(
                           onPressed: () {},
                           child: Text(
                             "Skip",
@@ -110,7 +108,7 @@ class _RestScreenState extends State<RestScreen> {
                       const SizedBox(
                         height: 25,
                       ),
-                      Container(
+                      SizedBox(
                         height: 200,
                         width: double.infinity,
                         child: Image.asset("assets/splash.png"),
