@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import '../services/firebaseservices.dart';
 import 'package:shapeup/screens/logintoscreen.dart';
+import 'package:shapeup/services/stepstracker.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -69,13 +70,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     color:
                                         const Color.fromARGB(255, 7, 201, 255)),
                                 borderRadius: BorderRadius.circular(50)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(2),
-                              child: Image.asset(
-                                "assets/splash.png",
-                                fit: BoxFit.contain,
-                              ),
-                            )),
+                            child: const Padding(
+                                padding: EdgeInsets.all(2),
+                                child: CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHEPBZaPFFaCaLEFCLusmQJc0sat0F49rvHQHUG4xl_HEyVoEuJcC5xYTocY5LVEqxTXY&usqp=CAU"),
+                                ))),
                         const SizedBox(
                           height: 20,
                         ),
@@ -230,14 +230,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        "Settings",
-                                        textAlign: TextAlign.left,
-                                        style: GoogleFonts.montserrat(
-                                            color: Colors.black,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600),
-                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const StepTracker()),
+                                          );
+                                        },
+                                        child: Text(
+                                          "Steps",
+                                          textAlign: TextAlign.left,
+                                          style: GoogleFonts.montserrat(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      )
                                     ],
                                   ),
                                 ),

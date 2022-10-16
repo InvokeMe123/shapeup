@@ -6,6 +6,8 @@ class NotificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<int> notificationlist = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -22,79 +24,47 @@ class NotificationScreen extends StatelessWidget {
         ),
         body: SafeArea(
             child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Column(children: [
-            Card(
-              elevation: 1,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15)),
-              ),
-              color: const Color.fromARGB(255, 227, 252, 255),
-              child: SizedBox(
-                child: Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Burn atleast 400",
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.montserrat(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600),
+                padding: const EdgeInsets.all(15),
+                child: Expanded(
+                    flex: 1,
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.only(
+                          top: 0, left: 10, right: 10, bottom: 5),
+                      scrollDirection: Axis.vertical,
+                      child: Column(
+                        children:
+                            List.generate(notificationlist.length, (index) {
+                          return Container(
+                              margin: const EdgeInsets.only(bottom: 10),
+                              padding: const EdgeInsets.only(
+                                  top: 10, left: 10, right: 10, bottom: 10),
+                              decoration: const BoxDecoration(
+                                  color: Color.fromARGB(255, 255, 245, 220),
+                                  border: Border(
+                                    bottom: BorderSide(
+                                        width: 1.0,
+                                        color:
+                                            Color.fromARGB(255, 255, 245, 220)),
+                                  )),
+                              child: Padding(
+                                padding: const EdgeInsets.all(5),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "Jumping jack",
+                                      style: GoogleFonts.notoSansMono(
+                                          color: Colors.black,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                  ],
+                                ),
+                              ));
+                        }),
                       ),
-                      Text(
-                        "calories",
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.montserrat(
-                            letterSpacing: .5,
-                            color: const Color.fromARGB(125, 0, 0, 0),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Card(
-              elevation: 1,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15)),
-              ),
-              color: const Color.fromARGB(255, 227, 252, 255),
-              child: SizedBox(
-                child: Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Burn atleast 400",
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.montserrat(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      Text(
-                        "calories",
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.montserrat(
-                            letterSpacing: .5,
-                            color: const Color.fromARGB(125, 0, 0, 0),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ]),
-        )));
+                    )))));
   }
 }

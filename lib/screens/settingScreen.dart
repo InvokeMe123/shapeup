@@ -22,13 +22,6 @@ class _SettingUpScreenState extends State<SettingUpScreen> {
 
   @override
   void initState() {
-//     var querySnapshot = FirebaseFirestore.instance.collection('profile').doc(user?.uid).get();
-
-// for (var queryDocumentSnapshot in collection.) {
-//   Map<String, dynamic> data = queryDocumentSnapshot.data();
-//   var name = data['name'];
-//   var phone = data['phone'];
-
     FirebaseFirestore.instance
         .collection('profile')
         .doc(user?.uid)

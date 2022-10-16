@@ -39,8 +39,12 @@ dependencies:
   firebase_auth: ^3.3.20
   firebase_core: ^1.20.0
   google_sign_in: ^5.3.3
-  models: ^0.0.2
   cloud_firestore: ^3.4.1
+  flutter_image_slideshow: ^0.1.2
+  animated_text_kit: ^4.2.2
+  models: ^0.0.2
+  blur: ^3.1.0
+  pedometer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -75,6 +79,10 @@ flutter:
     - assets/female.png
     - assets/height.png
     - assets/weight.png
+    - assets/dietpremium.png
+    - assets/slider2.png
+    - assets/slider1.png
+    - assets/diet.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

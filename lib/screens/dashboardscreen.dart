@@ -18,10 +18,10 @@ class DashBoardScreen extends StatefulWidget {
 class _DashBoardScreenState extends State<DashBoardScreen> {
   final List<Widget> screens = [
     const HomeScreen(),
-    const DietScreen(),
     const WorkoutScreen(),
+    const DietScreen(),
     const NotificationScreen(),
-    const PremiumScreem(),
+    const PremiumScreen(),
   ];
   int _selectedIndex = 0;
 
@@ -49,13 +49,13 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             label: '',
           ),
           BottomNavigationBarItem(
-            activeIcon: Icon(Icons.food_bank),
-            icon: Icon(Icons.food_bank_outlined),
+            activeIcon: Icon(Icons.run_circle),
+            icon: Icon(Icons.run_circle_outlined),
             label: '',
           ),
           BottomNavigationBarItem(
-            activeIcon: Icon(Icons.run_circle),
-            icon: Icon(Icons.run_circle_outlined),
+            activeIcon: Icon(Icons.food_bank),
+            icon: Icon(Icons.food_bank_outlined),
             label: '',
           ),
           BottomNavigationBarItem(
