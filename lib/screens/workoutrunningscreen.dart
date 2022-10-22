@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import "package:flutter/material.dart";
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
@@ -11,6 +13,19 @@ class WorkoutRunningScreen extends StatefulWidget {
 }
 
 class _WorkoutRunningScreenState extends State<WorkoutRunningScreen> {
+  int timeLeft = 30;
+  void _startCountdown() {
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      if (timeLeft > 0) {
+        setState(() {
+          timeLeft--;
+        });
+      } else {
+        timer.cancel();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,12 +69,25 @@ class _WorkoutRunningScreenState extends State<WorkoutRunningScreen> {
                 height: 50,
               ),
               Text(
-                "Timer or Count",
+                "Press the time to start the timer",
                 style: GoogleFonts.notoSansMono(
                     color: Colors.black.withOpacity(.80),
-                    fontSize: 30,
+                    fontSize: 25,
                     fontWeight: FontWeight.w700),
+                textAlign: TextAlign.center,
               ),
+              const SizedBox(
+                height: 25,
+              ),
+              MaterialButton(
+                  onPressed: _startCountdown,
+                  child: Text(
+                    timeLeft == 0 ? 'Done' : timeLeft.toString() + 's',
+                    style: GoogleFonts.notoSansMono(
+                        color: Colors.black.withOpacity(.80),
+                        fontSize: 30,
+                        fontWeight: FontWeight.w700),
+                  )),
               const SizedBox(
                 height: 50,
               ),
@@ -83,7 +111,7 @@ class _WorkoutRunningScreenState extends State<WorkoutRunningScreen> {
                         textStyle: const TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold)),
                     child: Text(
-                      "Done",
+                      "Next",
                       style: GoogleFonts.notoSansMono(
                           color: Colors.black.withOpacity(.75),
                           fontSize: 16,
@@ -101,7 +129,9 @@ class _WorkoutRunningScreenState extends State<WorkoutRunningScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
                         child: Text(
                           "Previous",
                           style: GoogleFonts.notoSansMono(
@@ -111,7 +141,14 @@ class _WorkoutRunningScreenState extends State<WorkoutRunningScreen> {
                         ),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              PageTransition(
+                                  type: PageTransitionType.fade,
+                                  duration: const Duration(milliseconds: 250),
+                                  child: const RestScreen()));
+                        },
                         child: Text(
                           "Skip",
                           style: GoogleFonts.notoSansMono(

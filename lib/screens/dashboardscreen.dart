@@ -3,6 +3,7 @@ import 'package:shapeup/screens/dietscreen.dart';
 import 'package:shapeup/screens/homescreen.dart';
 import 'package:shapeup/screens/notificationscreen.dart';
 import 'package:shapeup/screens/premiumscreen.dart';
+import 'package:shapeup/screens/subscription_screen.dart';
 import 'package:shapeup/screens/workoutscreen.dart';
 // import 'package:shapeup/screens/profilescreen.dart';
 // import 'package:page_transition/page_transition.dart';
@@ -21,7 +22,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     const DietScreen(),
     const WorkoutScreen(),
     const NotificationScreen(),
-    const PremiumScreem(),
+    const SubscriptionPage(),
   ];
   int _selectedIndex = 0;
 
