@@ -1,10 +1,10 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
-import 'package:google_fonts/google_fonts.dart';
+//import 'package:google_fonts/google_fonts.dart';
 import 'package:shapeup/models/diet_model.dart';
 import 'package:shapeup/screens/diet_card.dart';
-import 'package:shapeup/screens/diet_detail_page.dart';
+//import 'package:shapeup/screens/diet_detail_page.dart';
 
 class PremiumScreen extends StatefulWidget {
   const PremiumScreen({Key? key}) : super(key: key);

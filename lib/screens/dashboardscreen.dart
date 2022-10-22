@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shapeup/screens/dietscreen.dart';
 import 'package:shapeup/screens/homescreen.dart';
 import 'package:shapeup/screens/notificationscreen.dart';
-import 'package:shapeup/screens/premiumscreen.dart';
+//import 'package:shapeup/screens/premiumscreen.dart';
 import 'package:shapeup/screens/subscription_screen.dart';
 import 'package:shapeup/screens/workoutscreen.dart';
 // import 'package:shapeup/screens/profilescreen.dart';
