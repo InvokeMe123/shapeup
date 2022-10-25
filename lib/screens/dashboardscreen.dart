@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shapeup/screens/dietscreen.dart';
 import 'package:shapeup/screens/homescreen.dart';
 import 'package:shapeup/screens/notificationscreen.dart';
-import 'package:shapeup/screens/premiumscreen.dart';
+import 'package:shapeup/screens/subscription_screen.dart';
 import 'package:shapeup/screens/workoutscreen.dart';
-// import 'package:shapeup/screens/profilescreen.dart';
-// import 'package:page_transition/page_transition.dart';
-// import 'package:google_fonts/google_fonts.dart';
 
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({Key? key}) : super(key: key);
@@ -21,7 +18,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     const WorkoutScreen(),
     const DietScreen(),
     const NotificationScreen(),
-    const PremiumScreen(),
+    const SubscriptionPage(),
   ];
   int _selectedIndex = 0;
 

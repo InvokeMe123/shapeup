@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import '../services/firebaseservices.dart';
 import 'package:shapeup/screens/logintoscreen.dart';
-import 'package:shapeup/services/stepstracker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -13,6 +14,47 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  User? user = FirebaseAuth.instance.currentUser;
+  final userId = FirebaseAuth.instance.currentUser?.uid;
+
+  var authName = '';
+  double? bmi;
+  String? height;
+  String? weight;
+
+  @override
+  void initState() {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      for (final providerProfile in user.providerData) {
+        final name = providerProfile.displayName;
+        setState(() {
+          authName = name!;
+        });
+      }
+    }
+    FirebaseFirestore.instance
+        .collection('profile')
+        .doc(user?.uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        Map<String, dynamic> data =
+            documentSnapshot.data() as Map<String, dynamic>;
+        weight = (data['weight']);
+        height = (data['height']);
+        bmi = (data['BMI']);
+        setState(() {
+          bmi = (data['BMI']);
+          weight = (data['weight']);
+          height = (data['height']);
+        });
+      }
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,16 +112,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     color:
                                         const Color.fromARGB(255, 7, 201, 255)),
                                 borderRadius: BorderRadius.circular(50)),
-                            child: const Padding(
-                                padding: EdgeInsets.all(2),
-                                child: CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHEPBZaPFFaCaLEFCLusmQJc0sat0F49rvHQHUG4xl_HEyVoEuJcC5xYTocY5LVEqxTXY&usqp=CAU"),
-                                ))),
+                            child: Padding(
+                              padding: const EdgeInsets.all(2),
+                              child: Image.asset(
+                                "assets/splash.png",
+                                fit: BoxFit.contain,
+                              ),
+                            )),
                         const SizedBox(
                           height: 20,
                         ),
-                        Text("Aadarsh Ghimire",
+                        Text(authName,
                             style: GoogleFonts.montserrat(
                                 letterSpacing: .5,
                                 color: Colors.black,
@@ -111,7 +154,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         fontWeight: FontWeight.w600),
                                   ),
                                   Text(
-                                    "22",
+                                    '$bmi',
                                     textAlign: TextAlign.left,
                                     style: GoogleFonts.montserrat(
                                         letterSpacing: .5,
@@ -151,7 +194,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         fontWeight: FontWeight.w600),
                                   ),
                                   Text(
-                                    "72",
+                                    '$weight',
                                     textAlign: TextAlign.left,
                                     style: GoogleFonts.montserrat(
                                         letterSpacing: .5,
@@ -191,7 +234,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         fontWeight: FontWeight.w600),
                                   ),
                                   Text(
-                                    "180",
+                                    '$height',
                                     textAlign: TextAlign.left,
                                     style: GoogleFonts.montserrat(
                                         letterSpacing: .5,
@@ -230,24 +273,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const StepTracker()),
-                                          );
-                                        },
-                                        child: Text(
-                                          "Steps",
-                                          textAlign: TextAlign.left,
-                                          style: GoogleFonts.montserrat(
-                                              color: Colors.black,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      )
+                                      Text(
+                                        "Settings",
+                                        textAlign: TextAlign.left,
+                                        style: GoogleFonts.montserrat(
+                                            color: Colors.black,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600),
+                                      ),
                                     ],
                                   ),
                                 ),
