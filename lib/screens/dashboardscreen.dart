@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:shapeup/screens/dietscreen.dart';
 import 'package:shapeup/screens/homescreen.dart';
 import 'package:shapeup/screens/notificationscreen.dart';
-import 'package:shapeup/screens/subscription_screen.dart';
+import 'package:shapeup/screens/premiumscreen.dart';
 import 'package:shapeup/screens/workoutscreen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({Key? key}) : super(key: key);
@@ -12,13 +15,40 @@ class DashBoardScreen extends StatefulWidget {
   State<DashBoardScreen> createState() => _DashBoardScreenState();
 }
 
+asyncFunc() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  User? user = FirebaseAuth.instance.currentUser;
+  FirebaseFirestore.instance
+      .collection('profile')
+      .doc(user?.uid)
+      .get()
+      .then((DocumentSnapshot documentSnapshot) {
+    if (documentSnapshot.exists) {
+      Map<String, dynamic> data =
+          documentSnapshot.data() as Map<String, dynamic>;
+      prefs.setDouble("BMI", (data['BMI']));
+      prefs.setString("age", (data['age']));
+      prefs.setString("gender", (data['gender']));
+      prefs.setString("height", (data['height']));
+      prefs.setString("weight", (data['weight']));
+      prefs.setBool("premium", (data['premium']));
+    }
+  });
+}
+
 class _DashBoardScreenState extends State<DashBoardScreen> {
+  @override
+  void initState() {
+    asyncFunc();
+    super.initState();
+  }
+
   final List<Widget> screens = [
     const HomeScreen(),
     const WorkoutScreen(),
     const DietScreen(),
     const NotificationScreen(),
-    const SubscriptionPage(),
+    const PremiumScreen(),
   ];
   int _selectedIndex = 0;
 

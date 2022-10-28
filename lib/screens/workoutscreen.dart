@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shapeup/screens/workoutrunningscreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class WorkoutScreen extends StatefulWidget {
   const WorkoutScreen({Key? key}) : super(key: key);
@@ -12,6 +13,21 @@ class WorkoutScreen extends StatefulWidget {
 
 class _WorkoutScreenState extends State<WorkoutScreen> {
   List<int> text = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  var authName = '';
+  @override
+  void initState() {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      for (final providerProfile in user.providerData) {
+        final name = providerProfile.displayName;
+        setState(() {
+          authName = name!;
+        });
+      }
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

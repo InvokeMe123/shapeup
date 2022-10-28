@@ -4,7 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import '../services/firebaseservices.dart';
 import 'package:shapeup/screens/logintoscreen.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -21,9 +22,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
   double? bmi;
   String? height;
   String? weight;
+  asyncFunc() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      bmi = prefs.getDouble("BMI");
+      prefs.getString("gender");
+      height = prefs.getString("height");
+      weight = prefs.getString("weight");
+      prefs.getString("age");
+      prefs.getBool("premium");
+    });
+  }
+
+  clear() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+  }
 
   @override
   void initState() {
+    asyncFunc();
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
@@ -34,24 +52,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
       }
     }
-    FirebaseFirestore.instance
-        .collection('profile')
-        .doc(user?.uid)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        Map<String, dynamic> data =
-            documentSnapshot.data() as Map<String, dynamic>;
-        weight = (data['weight']);
-        height = (data['height']);
-        bmi = (data['BMI']);
-        setState(() {
-          bmi = (data['BMI']);
-          weight = (data['weight']);
-          height = (data['height']);
-        });
-      }
-    });
+    // FirebaseFirestore.instance
+    //     .collection('profile')
+    //     .doc(user?.uid)
+    //     .get()
+    //     .then((DocumentSnapshot documentSnapshot) {
+    //   if (documentSnapshot.exists) {
+    //     Map<String, dynamic> data =
+    //         documentSnapshot.data() as Map<String, dynamic>;
+    //     weight = (data['weight']);
+    //     height = (data['height']);
+    //     bmi = (data['BMI']);
+    //     setState(() {
+    //       bmi = (data['BMI']);
+    //       weight = (data['weight']);
+    //       height = (data['height']);
+    //     });
+    //   }
+    // });
     super.initState();
   }
 
@@ -303,7 +321,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     children: [
                                       GestureDetector(
                                         onTap: () async {
+                                          await clear();
                                           await FirebaseService().signOut();
+
                                           // ignore: use_build_context_synchronously
                                           Navigator.push(
                                               context,

@@ -120,6 +120,7 @@ class _HeightScreenState extends State<HeightScreen> {
                                   .collection('profile')
                                   .doc(user?.uid)
                                   .update({
+                                'premium': false,
                                 'height': _heightController.text,
                               }).then((value) => Navigator.pushReplacement(
                                       context,

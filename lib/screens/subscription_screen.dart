@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:shapeup/models/subscription_model.dart';
-// import 'package:khalti_flutter/khalti_flutter.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:shapeup/screens/dashboardscreen.dart';
+import 'package:shapeup/screens/premiumscreen.dart';
 
 class SubscriptionPage extends StatefulWidget {
   const SubscriptionPage({Key? key}) : super(key: key);
@@ -10,7 +14,33 @@ class SubscriptionPage extends StatefulWidget {
   State<SubscriptionPage> createState() => _SubscriptionPageState();
 }
 
+User? user = FirebaseAuth.instance.currentUser;
+final userId = FirebaseAuth.instance.currentUser?.uid;
+const successmessage = SnackBar(
+  content: Text('Payment Failed'),
+);
+
 class _SubscriptionPageState extends State<SubscriptionPage> {
+  @override
+  void initState() {
+    // User? user = FirebaseAuth.instance.currentUser;
+    // if (user != null) {
+    //   for (final providerProfile in user.providerData) {}
+    // }
+    // FirebaseFirestore.instance
+    //     .collection('profile')
+    //     .doc(user?.uid)
+    //     .get()
+    //     .then((DocumentSnapshot documentSnapshot) {
+    //   if (documentSnapshot.exists) {
+    //     Map<String, dynamic> data =
+    //         documentSnapshot.data() as Map<String, dynamic>;
+    //           Bool premium = (data['premium']);
+    //   }
+    // });
+    super.initState();
+  }
+
   List<SubscriptionModel> subscriptionPlans = [
     SubscriptionModel(
         title: 'NPR 80.00 per 1 month', price: 80.00, isSelected: false),
@@ -40,6 +70,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
           'Subscription',
@@ -50,6 +81,8 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
         elevation: 0.0,
       ),
       body: Container(
+        height: double.infinity,
+        width: double.infinity,
         decoration: BoxDecoration(color: Colors.teal.shade100),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -166,12 +199,26 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                     preferences: [
                       PaymentPreference.khalti,
                     ],
-                    onSuccess: (su) {
-                      const successsnackBar = SnackBar(
-                        content: Text('Payment Successful'),
-                      );
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(successsnackBar);
+                    onSuccess: (su) async => {
+                      await FirebaseFirestore.instance
+                          .collection('profile')
+                          .doc(user?.uid)
+                          .update({
+                        'premium': true,
+                      }),
+                      Future(() {
+                        const successsnackBar =
+                            SnackBar(content: Text('Payment Success'));
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(successsnackBar);
+                      }),
+                      Navigator.push(
+                        context,
+                        PageTransition(
+                            type: PageTransitionType.fade,
+                            duration: const Duration(milliseconds: 300),
+                            child: const DashBoardScreen()),
+                      )
                     },
                     onFailure: (fa) {
                       const failedsnackBar = SnackBar(
@@ -189,16 +236,16 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                     },
                   );
                 },
-                child: const Text(
-                  'Upgrade to Premium',
-                  style: TextStyle(color: Colors.black),
-                ),
                 style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all(const Color(0xffe6e7ec)),
                   shape: MaterialStateProperty.all(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40),
                   )),
+                ),
+                child: const Text(
+                  'Upgrade to Premium',
+                  style: TextStyle(color: Colors.black),
                 ),
               ),
             ),
