@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shapeup/screens/daily_diet_plan_page.dart';
 //import 'package:flutter/src/foundation/key.dart';
 //import 'package:flutter/src/widgets/framework.dart';
 
@@ -20,7 +21,7 @@ class DietDetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset(
+              Image.network(
                 dietModel.imagePath,
                 height: 180,
                 width: double.infinity,
@@ -68,7 +69,7 @@ class DietDetailPage extends StatelessWidget {
                 height: 15,
               ),
               Text(
-                'Difficulty: ${dietModel.difficulty.name}',
+                'Difficulty: ${dietModel.difficulty}',
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -97,19 +98,28 @@ class DietDetailPage extends StatelessWidget {
               const SizedBox(
                 height: 8,
               ),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) => Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text(
-                    '- ${dietModel.planCondition[index]}',
-                    style: const TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
+              // ListView.builder(
+              //   shrinkWrap: true,
+              //   physics: const NeverScrollableScrollPhysics(),
+              //   itemBuilder: (context, index) => Padding(
+              //     padding: const EdgeInsets.only(bottom: 8.0),
+              //     child: Text(
+              //       '- ${dietModel.planCondition[index]}',
+              //       style: const TextStyle(
+              //         fontSize: 16,
+              //       ),
+              //     ),
+              //   ),
+              //   itemCount: dietModel.planCondition.length,
+              // ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => DailyDietPlanPage()));
+                  },
+                  child: const Text('Start Plan'),
                 ),
-                itemCount: dietModel.planCondition.length,
               ),
             ],
           ),

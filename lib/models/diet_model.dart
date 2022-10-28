@@ -4,9 +4,9 @@ class DietModel {
   final String caution;
   final String imagePath;
   final String duration;
-  final DietDifficulty difficulty;
+  final String difficulty;
   final String commitment;
-  final List<String> planCondition;
+  List<String>? planCondition;
 
   DietModel({
     required this.duration,
@@ -16,7 +16,7 @@ class DietModel {
     required this.imagePath,
     required this.commitment,
     required this.difficulty,
-    required this.planCondition,
+    this.planCondition,
   });
 }
 

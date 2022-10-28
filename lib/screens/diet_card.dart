@@ -31,7 +31,7 @@ class DietCard extends StatelessWidget {
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10)),
-                child: Image.asset(
+                child: Image.network(
                   dietModel.imagePath,
                   height: 180,
                   width: double.infinity,

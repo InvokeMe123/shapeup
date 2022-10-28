@@ -160,7 +160,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
                   caution:
                       'Consult your physician before starting any plan. Neither Shape Up nor its affiliates will be liable for any injury sustained as a result of your participation.',
                   duration: '28 days',
-                  difficulty: DietDifficulty.beginner,
+                  difficulty: 'Beginner',
                   commitment: 'Daily',
                   planCondition: [
                     ' Your calorie goal is between 1200 and 2200 calories.',
@@ -178,7 +178,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
                   caution:
                       'Consult your physician before starting any plan. Neither Shape Up nor its affiliates will be liable for any injury sustained as a result of your participation.',
                   duration: '',
-                  difficulty: DietDifficulty.beginner,
+                  difficulty: 'Beginner',
                   commitment: 'Daily',
                   planCondition: [
                     ' Your calorie goal is between 1200 and 2200 calories.',

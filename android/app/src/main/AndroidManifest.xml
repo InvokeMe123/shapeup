@@ -5,6 +5,7 @@
         android:label="shapeup"
         android:name="${applicationName}"
         android:icon="@mipmap/icon">
+        android:usesCleartextTraffic="true"
         <activity
             android:name=".MainActivity"
             android:exported="true"
