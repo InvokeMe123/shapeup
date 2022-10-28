@@ -52,24 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
       }
     }
-    // FirebaseFirestore.instance
-    //     .collection('profile')
-    //     .doc(user?.uid)
-    //     .get()
-    //     .then((DocumentSnapshot documentSnapshot) {
-    //   if (documentSnapshot.exists) {
-    //     Map<String, dynamic> data =
-    //         documentSnapshot.data() as Map<String, dynamic>;
-    //     weight = (data['weight']);
-    //     height = (data['height']);
-    //     bmi = (data['BMI']);
-    //     setState(() {
-    //       bmi = (data['BMI']);
-    //       weight = (data['weight']);
-    //       height = (data['height']);
-    //     });
-    //   }
-    // });
+
     super.initState();
   }
 
@@ -291,14 +274,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        "Settings",
-                                        textAlign: TextAlign.left,
-                                        style: GoogleFonts.montserrat(
-                                            color: Colors.black,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600),
-                                      ),
+                                      GestureDetector(
+                                        onTap: () async {},
+                                        child: Text(
+                                          "settings",
+                                          textAlign: TextAlign.left,
+                                          style: GoogleFonts.montserrat(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      )
                                     ],
                                   ),
                                 ),

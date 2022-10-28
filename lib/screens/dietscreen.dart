@@ -2,12 +2,9 @@ import "package:flutter/material.dart";
 import 'package:google_fonts/google_fonts.dart';
 import 'package:blur/blur.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shapeup/screens/premiumscreen.dart';
-
-enum DietState {
-  paid,
-  unpaid,
-}
+import 'package:firebase_auth/firebase_auth.dart';
 
 class DietScreen extends StatefulWidget {
   const DietScreen({Key? key}) : super(key: key);
@@ -17,7 +14,23 @@ class DietScreen extends StatefulWidget {
 }
 
 class _DietScreenState extends State<DietScreen> {
-  DietState currentState = DietState.unpaid;
+  User? user = FirebaseAuth.instance.currentUser;
+  final userId = FirebaseAuth.instance.currentUser?.uid;
+
+  bool? premium;
+  Future asyncFunc() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      premium = prefs.getBool("premium");
+    });
+  }
+
+  @override
+  void initState() {
+    asyncFunc();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +49,7 @@ class _DietScreenState extends State<DietScreen> {
                           const TextStyle(color: Colors.black, fontSize: 20)))),
         ),
         body: SafeArea(
-            child: currentState == DietState.unpaid
+            child: premium == false
                 ? SizedBox(
                     child: Image.asset(
                       'assets/dietpremium.png',

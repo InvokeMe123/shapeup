@@ -18,7 +18,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
   double? bmi;
   String? height;
   bool? premium;
-  asyncFunc() async {
+  Future asyncFunc() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       premium = prefs.getBool("premium");
@@ -54,8 +54,8 @@ class _PremiumScreenState extends State<PremiumScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: premium == false
-            ? const SubscriptionPage()
-            : const UnlockedScreen());
+        body: premium == true
+            ? const UnlockedScreen()
+            : const SubscriptionPage());
   }
 }

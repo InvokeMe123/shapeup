@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shapeup/screens/dashboardscreen.dart';
-import 'package:shapeup/screens/premiumscreen.dart';
 
 class SubscriptionPage extends StatefulWidget {
   const SubscriptionPage({Key? key}) : super(key: key);
@@ -23,21 +22,6 @@ const successmessage = SnackBar(
 class _SubscriptionPageState extends State<SubscriptionPage> {
   @override
   void initState() {
-    // User? user = FirebaseAuth.instance.currentUser;
-    // if (user != null) {
-    //   for (final providerProfile in user.providerData) {}
-    // }
-    // FirebaseFirestore.instance
-    //     .collection('profile')
-    //     .doc(user?.uid)
-    //     .get()
-    //     .then((DocumentSnapshot documentSnapshot) {
-    //   if (documentSnapshot.exists) {
-    //     Map<String, dynamic> data =
-    //         documentSnapshot.data() as Map<String, dynamic>;
-    //           Bool premium = (data['premium']);
-    //   }
-    // });
     super.initState();
   }
 

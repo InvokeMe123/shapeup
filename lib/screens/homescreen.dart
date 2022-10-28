@@ -4,6 +4,8 @@ import 'package:shapeup/screens/profilescreen.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../services/stepstracker.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -322,7 +324,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                   color: Colors.black,
                                   iconSize: 24,
                                   icon: const Icon(Icons.arrow_right_alt),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      PageTransition(
+                                        type: PageTransitionType.fade,
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        child: const StepTracker(),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ],
                             ),

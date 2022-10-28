@@ -7,10 +7,6 @@ String formatDate(DateTime d) {
   return d.toString().substring(0, 19);
 }
 
-// void main() {
-//   runApp(MyApp());
-// }
-
 class StepTracker extends StatefulWidget {
   const StepTracker({Key? key}) : super(key: key);
 
@@ -37,7 +33,7 @@ class _StepTrackerState extends State<StepTracker> {
 
   void onPedestrianStatusChanged(PedestrianStatus event) {
     setState(() {
-      _status = event.status;
+      _status = event.status.toString();
     });
   }
 
