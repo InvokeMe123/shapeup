@@ -153,6 +153,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
             // ),
             DietCard(
               dietModel: DietModel(
+                  id: '',
                   title: 'Low Carb',
                   imagePath: 'assets/diet.jpg',
                   description:
@@ -172,6 +173,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
             ),
             DietCard(
               dietModel: DietModel(
+                  id: '',
                   title: 'High Protein',
                   imagePath: 'assets/slider2.jpg',
                   description: '',

@@ -47,6 +47,7 @@ dependencies:
   flutter_image_slideshow: ^0.1.2
   animated_text_kit: ^4.2.2
   khalti_flutter: ^2.1.0
+  styled_widget: ^0.4.0+3
 
 dev_dependencies:
   flutter_test:

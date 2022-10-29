@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shapeup/screens/daily_diet_plan_page.dart';
+import 'package:styled_widget/styled_widget.dart';
 //import 'package:flutter/src/foundation/key.dart';
 //import 'package:flutter/src/widgets/framework.dart';
 
@@ -13,6 +14,7 @@ class DietDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.teal,
         title: Text(dietModel.title),
       ),
       body: SingleChildScrollView(
@@ -115,11 +117,28 @@ class DietDetailPage extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => DailyDietPlanPage()));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => DailyDietPlanPage(
+                          docId: dietModel.id,
+                        ),
+                      ),
+                    );
                   },
-                  child: const Text('Start Plan'),
-                ),
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                    ),
+                    backgroundColor: MaterialStateProperty.all(Colors.teal),
+                  ),
+                  child: const Text(
+                    'See Plan Details',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                ).height(45).padding(top: 15),
               ),
             ],
           ),

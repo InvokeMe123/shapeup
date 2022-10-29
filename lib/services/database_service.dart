@@ -3,13 +3,11 @@ import 'package:shapeup/models/daily_diet_model.dart';
 import 'package:shapeup/models/diet_model.dart';
 
 class DatabaseService {
+  final String? docID;
+  DatabaseService({this.docID});
+
   final CollectionReference dietCollection =
       FirebaseFirestore.instance.collection('Diet');
-
-  final CollectionReference dailyPlanCollection = FirebaseFirestore.instance
-      .collection('Diet')
-      .doc()
-      .collection('DailyPlan');
 
   final CollectionReference exerciseCollection =
       FirebaseFirestore.instance.collection('exercise');
@@ -17,26 +15,27 @@ class DatabaseService {
   List<DailyDietModel> _dailyDietPlan(QuerySnapshot snapshot) {
     return snapshot.docs
         .map((doc) => DailyDietModel(
-              amSnack: doc['A.M.Snack'] ?? '',
+              amSnack: '',
               breakfast: doc['Breakfast'] ?? '',
               dinner: doc['Dinner'] ?? '',
               lunch: doc['Lunch'] ?? '',
-              pmSnack: doc['P.M.Snack'] ?? '',
+              pmSnack: '',
             ))
         .toList();
   }
 
-  List<String> _dietDaily(QuerySnapshot snapshot) {
-    return snapshot.docs.map((doc) => doc['Lunch'] as String).toList();
-  }
-
-  Stream<List<String>> get dailyDietInfo {
-    return dailyPlanCollection.snapshots().map(_dietDaily);
+  Stream<List<DailyDietModel>> get dailyDietInfo {
+    return dietCollection
+        .doc(docID)
+        .collection('DietLowCarb101')
+        .snapshots()
+        .map(_dailyDietPlan);
   }
 
   List<DietModel> _dietListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return DietModel(
+        id: doc.id,
         title: doc['DietName'] ?? '',
         duration: doc['Duration'] ?? '',
         difficulty: doc['Difficulty'] ?? '',

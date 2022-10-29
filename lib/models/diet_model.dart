@@ -1,4 +1,5 @@
 class DietModel {
+  final String id;
   final String title;
   final String description;
   final String caution;
@@ -9,6 +10,7 @@ class DietModel {
   List<String>? planCondition;
 
   DietModel({
+    required this.id,
     required this.duration,
     required this.title,
     required this.description,
