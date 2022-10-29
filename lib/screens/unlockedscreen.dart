@@ -88,8 +88,9 @@ class _UnlockedScreenState extends State<UnlockedScreen> {
             ),
             PremiumDietCard(
               dietModel: DietModel(
+                  id: '',
                   title: 'Low Carb',
-                  imageURL: 'assets/dietpremium.png',
+                  imagePath: "assets/diet.png",
                   description:
                       'Ease into low-carb eating in just 4 weeks. This Plan uses our brand new Meal Planner tool to slowly scale back on carbs in a healthy and sustainable way. Build new habits one day at a time while following a meal plan customized for your calorie needs. By Day 28, you\'ll be able to confidently plan and cook low-carb meals and choose foods that fuel your body best.',
                   caution:
@@ -108,8 +109,9 @@ class _UnlockedScreenState extends State<UnlockedScreen> {
             ),
             PremiumDietCard(
               dietModel: DietModel(
+                  id: '',
                   title: 'High Protein',
-                  imageURL: 'assets/slider2.png',
+                  imagePath: "assets/dietpremium.png",
                   description: '',
                   caution:
                       'Consult your physician before starting any plan. Neither Shape Up nor its affiliates will be liable for any injury sustained as a result of your participation.',

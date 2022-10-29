@@ -32,7 +32,7 @@ class DietCard extends StatelessWidget {
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10)),
                 child: Image.network(
-                  dietModel.imageURL.toString(),
+                  dietModel.imagePath,
                   height: 180,
                   width: double.infinity,
                   fit: BoxFit.fitWidth,

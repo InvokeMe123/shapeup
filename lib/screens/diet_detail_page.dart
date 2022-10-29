@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shapeup/screens/daily_diet_plan_page.dart';
+import 'package:styled_widget/styled_widget.dart';
+
 import '../models/diet_model.dart';
 
 class DietDetailPage extends StatelessWidget {
@@ -10,6 +12,7 @@ class DietDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.teal,
         title: Text(dietModel.title),
       ),
       body: SingleChildScrollView(
@@ -19,7 +22,7 @@ class DietDetailPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image.network(
-                dietModel.imageURL,
+                dietModel.imagePath,
                 height: 180,
                 width: double.infinity,
                 fit: BoxFit.fitWidth,
@@ -95,30 +98,31 @@ class DietDetailPage extends StatelessWidget {
               const SizedBox(
                 height: 8,
               ),
-              // ListView.builder(
-              //   shrinkWrap: true,
-              //   physics: const NeverScrollableScrollPhysics(),
-              //   itemBuilder: (context, index) => Padding(
-              //     padding: const EdgeInsets.only(bottom: 8.0),
-              //     child: Text(
-              //       '- ${dietModel.planCondition[index]}',
-              //       style: const TextStyle(
-              //         fontSize: 16,
-              //       ),
-              //     ),
-              //   ),
-              //   itemCount: dietModel.planCondition.length,
-              // ),
               Center(
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => const DailyDietPlanPage()));
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => DailyDietPlanPage(
+                          docId: dietModel.id,
+                        ),
+                      ),
+                    );
                   },
-                  child: const Text('Start Plan'),
-                ),
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                    ),
+                    backgroundColor: MaterialStateProperty.all(Colors.teal),
+                  ),
+                  child: const Text(
+                    'See Plan Details',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                ).height(45).padding(top: 15),
               ),
             ],
           ),

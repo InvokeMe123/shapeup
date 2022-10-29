@@ -48,6 +48,7 @@ dependencies:
   khalti_flutter: ^2.1.0
   firestore_ui: ^1.24.0
   shared_preferences: ^2.0.15
+  styled_widget: ^0.4.0+3
 
 dev_dependencies:
   flutter_test:

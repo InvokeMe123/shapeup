@@ -32,7 +32,7 @@ class PremiumDietCard extends StatelessWidget {
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10)),
                 child: Image.asset(
-                  dietModel.imageURL,
+                  dietModel.imagePath,
                   height: 180,
                   width: double.infinity,
                   fit: BoxFit.fitWidth,
