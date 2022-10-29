@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shapeup/models/exercise_model.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shapeup/screens/exercisedaylistdetail.dart';
 
 class ExerciseCard extends StatelessWidget {
   final ExerciseModel exercisemodel;
@@ -9,14 +10,12 @@ class ExerciseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      // onTap: () => Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (_) => DietDetailPage(
-      //               dietModel: exercisemodel,
-      //             ))),
+      onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (_) =>
+                  ExerciseDayListDetail(exercisemodel: exercisemodel))),
       child: Card(
-        //low carb card
         margin: const EdgeInsets.all(10),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -24,22 +23,17 @@ class ExerciseCard extends StatelessWidget {
         elevation: 10.0,
         child: Row(
           children: [
-            Text(
-              "DAY",
-              textAlign: TextAlign.left,
-              style: GoogleFonts.montserrat(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600),
-            ),
-            Text(
-              exercisemodel.type,
-              textAlign: TextAlign.left,
-              style: GoogleFonts.montserrat(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600),
-            ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Text(
+                exercisemodel.type,
+                textAlign: TextAlign.left,
+                style: GoogleFonts.montserrat(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600),
+              ),
+            )
           ],
         ),
       ),

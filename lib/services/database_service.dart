@@ -9,9 +9,6 @@ class DatabaseService {
   final CollectionReference dietCollection =
       FirebaseFirestore.instance.collection('Diet');
 
-  final CollectionReference exerciseCollection =
-      FirebaseFirestore.instance.collection('exercise');
-
   List<DailyDietModel> _dailyDietPlan(QuerySnapshot snapshot) {
     return snapshot.docs
         .map((doc) => DailyDietModel(

@@ -1,13 +1,9 @@
 class ExerciseModel {
   String type;
+  final String id;
 
   ExerciseModel({
     required this.type,
+    required this.id,
   });
-
-  factory ExerciseModel.fromJson(Map<String, dynamic> json) {
-    return ExerciseModel(
-      type: json['type'],
-    );
-  }
 }

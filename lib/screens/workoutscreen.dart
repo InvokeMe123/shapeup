@@ -25,11 +25,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
         .doc("weightloss")
         .get()
         .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        Map<String, dynamic> data =
-            documentSnapshot.data() as Map<String, dynamic>;
-        print(data);
-      }
+      if (documentSnapshot.exists) {}
     });
 
     if (user != null) {
