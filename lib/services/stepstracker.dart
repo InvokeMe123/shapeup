@@ -21,8 +21,8 @@ class _StepTrackerState extends State<StepTracker> {
 
   @override
   void initState() {
-    super.initState();
     initPlatformState();
+    super.initState();
   }
 
   void onStepCount(StepCount event) {

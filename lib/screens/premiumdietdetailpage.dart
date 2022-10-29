@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-
+import 'package:shapeup/screens/daily_diet_plan_page.dart';
 import '../models/diet_model.dart';
 
-class DietDetailPage extends StatelessWidget {
+class PremiumDietDetailPage extends StatelessWidget {
   final DietModel dietModel;
-  const DietDetailPage({Key? key, required this.dietModel}) : super(key: key);
+  const PremiumDietDetailPage({Key? key, required this.dietModel})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class DietDetailPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image.asset(
-                dietModel.imagePath,
+                dietModel.imageURL,
                 height: 180,
                 width: double.infinity,
                 fit: BoxFit.fitWidth,
@@ -66,7 +67,7 @@ class DietDetailPage extends StatelessWidget {
                 height: 15,
               ),
               Text(
-                'Difficulty: ${dietModel.difficulty.name}',
+                'Difficulty: ${dietModel.difficulty}',
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -95,19 +96,30 @@ class DietDetailPage extends StatelessWidget {
               const SizedBox(
                 height: 8,
               ),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) => Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text(
-                    '- ${dietModel.planCondition[index]}',
-                    style: const TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
+              // ListView.builder(
+              //   shrinkWrap: true,
+              //   physics: const NeverScrollableScrollPhysics(),
+              //   itemBuilder: (context, index) => Padding(
+              //     padding: const EdgeInsets.only(bottom: 8.0),
+              //     child: Text(
+              //       '- ${dietModel.planCondition[index]}',
+              //       style: const TextStyle(
+              //         fontSize: 16,
+              //       ),
+              //     ),
+              //   ),
+              //   itemCount: dietModel.planCondition.length,
+              // ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => const DailyDietPlanPage()));
+                  },
+                  child: const Text('Start Plan'),
                 ),
-                itemCount: dietModel.planCondition.length,
               ),
             ],
           ),

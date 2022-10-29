@@ -2,9 +2,9 @@ class DietModel {
   final String title;
   final String description;
   final String caution;
-  final String imagePath;
+  final String imageURL;
   final String duration;
-  final DietDifficulty difficulty;
+  final String difficulty;
   final String commitment;
   final List<String> planCondition;
 
@@ -13,15 +13,9 @@ class DietModel {
     required this.title,
     required this.description,
     required this.caution,
-    required this.imagePath,
+    required this.imageURL,
     required this.commitment,
     required this.difficulty,
     required this.planCondition,
   });
-}
-
-enum DietDifficulty {
-  beginner,
-  intermediate,
-  advanced,
 }

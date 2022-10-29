@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shapeup/models/diet_model.dart';
-import 'package:shapeup/screens/diet_detail_page.dart';
+import 'package:shapeup/screens/premiumdietdetailpage.dart';
 
-class DietCard extends StatelessWidget {
+class PremiumDietCard extends StatelessWidget {
   final DietModel dietModel;
-  const DietCard({Key? key, required this.dietModel}) : super(key: key);
+  const PremiumDietCard({Key? key, required this.dietModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class DietCard extends StatelessWidget {
       onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (_) => DietDetailPage(
+              builder: (_) => PremiumDietDetailPage(
                     dietModel: dietModel,
                   ))),
       child: Card(
@@ -31,8 +31,8 @@ class DietCard extends StatelessWidget {
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10)),
-                child: Image.network(
-                  dietModel.imageURL.toString(),
+                child: Image.asset(
+                  dietModel.imageURL,
                   height: 180,
                   width: double.infinity,
                   fit: BoxFit.fitWidth,
