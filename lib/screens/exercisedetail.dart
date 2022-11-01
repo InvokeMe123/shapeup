@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shapeup/models/exercise_model.dart';
-import 'package:shapeup/screens/exercisedaydetail.dart';
+import 'package:shapeup/screens/exercisedaylist.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-class ExerciseDayListDetail extends StatelessWidget {
+class ExerciseDetail extends StatelessWidget {
   final ExerciseModel exercisemodel;
-  const ExerciseDayListDetail({Key? key, required this.exercisemodel})
+  const ExerciseDetail({Key? key, required this.exercisemodel})
       : super(key: key);
 
   @override
@@ -35,9 +35,8 @@ class ExerciseDayListDetail extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => ExerciseDayDetail(
-                          docId: exercisemodel.id,
-                        ),
+                        builder: (_) =>
+                            ExerciseDayList(exercisemodel: exercisemodel),
                       ),
                     );
                   },

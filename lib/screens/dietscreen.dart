@@ -1,9 +1,7 @@
 import "package:flutter/material.dart";
 import 'package:google_fonts/google_fonts.dart';
 import 'package:blur/blur.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shapeup/screens/premiumscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../components/diet_card.dart';
@@ -28,6 +26,12 @@ class _DietScreenState extends State<DietScreen> {
     setState(() {
       premium = prefs.getBool("premium");
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    asyncFunc();
   }
 
   @override
@@ -59,10 +63,18 @@ class _DietScreenState extends State<DietScreen> {
                   blur: 2,
                   overlay: ElevatedButton(
                       onPressed: () async {
-                        PageTransition(
-                            type: PageTransitionType.fade,
-                            duration: const Duration(milliseconds: 250),
-                            child: const PremiumScreen());
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          backgroundColor: Colors.red,
+                          content: Text(
+                            'Unlock from Premium Tab',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ));
+                        // PageTransition(
+                        //     type: PageTransitionType.fade,
+                        //     duration: const Duration(milliseconds: 250),
+                        //     child: const PremiumScreen());
                       },
                       style: ElevatedButton.styleFrom(
                           elevation: 0,

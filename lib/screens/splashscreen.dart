@@ -17,21 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      for (final providerProfile in user.providerData) {
-        //final provider = providerProfile.providerId;
-
-        // UID specific to the provider
-        //final uid = providerProfile.uid;
-
-        // Name, email address, and profile photo URL
-        final name = providerProfile.displayName;
-        //final emailAddress = providerProfile.email;
-        //final profilePhoto = providerProfile.photoURL;
-        // ignore: avoid_print
-        print(name);
-      }
-    }
+    if (user != null) {}
 
     Timer(
         const Duration(seconds: 3),

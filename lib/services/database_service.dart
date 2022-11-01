@@ -12,11 +12,17 @@ class DatabaseService {
   List<DailyDietModel> _dailyDietPlan(QuerySnapshot snapshot) {
     return snapshot.docs
         .map((doc) => DailyDietModel(
-              amSnack: '',
+              id: doc.id,
+              amSnack: doc['MidMorning'] ?? '',
+              amSnackImage: doc['MidMorningImage'] ?? '',
               breakfast: doc['Breakfast'] ?? '',
+              breakfastImage: doc['BreakfastImage'] ?? '',
               dinner: doc['Dinner'] ?? '',
+              dinnerImage: doc['DinnerImage'] ?? '',
               lunch: doc['Lunch'] ?? '',
-              pmSnack: '',
+              lunchImage: doc['LunchImage'] ?? '',
+              pmSnack: doc['Evening'] ?? '',
+              pmSnackImage: doc['EveningImage'] ?? '',
             ))
         .toList();
   }

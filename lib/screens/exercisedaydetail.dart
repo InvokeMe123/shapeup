@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:shapeup/screens/exerciserunscreen.dart';
 import 'package:shapeup/services/exercisedb.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -6,7 +9,11 @@ import '../models/exercise_detail_model.dart';
 
 class ExerciseDayDetail extends StatefulWidget {
   final String docId;
-  const ExerciseDayDetail({Key? key, required this.docId}) : super(key: key);
+  final int dayindex;
+
+  const ExerciseDayDetail(
+      {Key? key, required this.docId, required this.dayindex})
+      : super(key: key);
 
   @override
   State<ExerciseDayDetail> createState() => _ExerciseDayDetailState();
@@ -30,14 +37,35 @@ class _ExerciseDayDetailState extends State<ExerciseDayDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Day Exercise Plans'),
-        backgroundColor: Colors.teal,
+        toolbarHeight: 65,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        title: Padding(
+            padding: const EdgeInsets.only(left: 12, top: 10),
+            child: Text("Day: ${widget.dayindex}",
+                style: GoogleFonts.montserrat(
+                    textStyle:
+                        const TextStyle(color: Colors.black, fontSize: 20)))),
       ),
       body: Column(
         children: <Widget>[
+          const SizedBox(
+            height: 10,
+          ),
+          Container(
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color: Color.fromARGB(255, 153, 152, 152)),
+              ),
+            ),
+          ),
           StreamBuilder<List<ExerciseDetailModel>>(
-              stream: ExerciseDatabase(docID: widget.docId).listExerciseInfo,
+              stream: ExerciseDatabase(
+                      docID: widget.docId, dayindex: widget.dayindex)
+                  .listExerciseInfo,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return Expanded(
@@ -51,31 +79,47 @@ class _ExerciseDayDetailState extends State<ExerciseDayDetail> {
                       }),
                       itemBuilder: (context, index) {
                         setLength(snapshot.data!.length);
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'No. ${index + 1}',
-                              style: const TextStyle(
-                                  fontSize: 25, fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            DietDetailWidget(
-                              title: 'name',
-                              data: snapshot.data![index].name,
-                            ),
-                            DietDetailWidget(
-                              title: 'description',
-                              data: snapshot.data![index].description,
-                            ),
-                            DietDetailWidget(
-                              title: 'counter',
-                              data: snapshot.data![index].counter,
-                            ),
-                          ],
-                        ).padding(top: 20, horizontal: 20);
+
+                        return snapshot.data![index].name == "restday"
+                            ? Center(
+                                child: Text(
+                                  "Take Rest",
+                                  style: GoogleFonts.notoSansMono(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              )
+                            : Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${index + 1}',
+                                    style: const TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  DietDetailWidget(
+                                    title: 'Name',
+                                    data: snapshot.data![index].name,
+                                  ),
+                                  DietDetailWidget(
+                                    title: 'Description',
+                                    data: snapshot.data![index].description,
+                                  ),
+                                  DietDetailWidget(
+                                    title: 'Counter',
+                                    data: snapshot.data![index].counter
+                                        .toString(),
+                                  ),
+                                  Image.network(
+                                    snapshot.data![index].gif,
+                                  ).center().expanded(),
+                                ],
+                              ).padding(top: 20, horizontal: 20);
                       },
                     ),
                   );
@@ -83,6 +127,34 @@ class _ExerciseDayDetailState extends State<ExerciseDayDetail> {
                   return const Center(child: CircularProgressIndicator());
                 }
               }),
+          SizedBox(
+            width: double.infinity,
+            child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        PageTransition(
+                            type: PageTransitionType.fade,
+                            duration: const Duration(milliseconds: 250),
+                            child: const ExerciseRunScreen()));
+                  },
+                  style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      primary: const Color.fromARGB(255, 227, 252, 255),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      textStyle: const TextStyle(
+                          fontSize: 30, fontWeight: FontWeight.bold)),
+                  child: Text(
+                    "Start",
+                    style: GoogleFonts.notoSansMono(
+                        color: Colors.black.withOpacity(.75),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700),
+                  ),
+                )),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -131,15 +203,13 @@ class DietDetailWidget extends StatelessWidget {
     return RichText(
       text: TextSpan(
         text: '$title : ',
-        style: const TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-        ),
+        style: GoogleFonts.notoSansMono(
+            color: Colors.black, fontSize: 14, fontWeight: FontWeight.w400),
         children: [
           TextSpan(
             text: data,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+            style: GoogleFonts.notoSansMono(
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w600),
           ),
         ],
       ),

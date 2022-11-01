@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shapeup/models/diet_model.dart';
 import 'package:shapeup/screens/diet_detail_page.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class DietCard extends StatelessWidget {
   final DietModel dietModel;
@@ -31,11 +32,14 @@ class DietCard extends StatelessWidget {
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10)),
-                child: Image.network(
-                  dietModel.imagePath,
-                  height: 180,
-                  width: double.infinity,
-                  fit: BoxFit.fitWidth,
+                child: Hero(
+                  tag: dietModel.imagePath,
+                  child: CachedNetworkImage(
+                    imageUrl: dietModel.imagePath,
+                    height: 180,
+                    width: double.infinity,
+                    fit: BoxFit.fitWidth,
+                  ),
                 ),
               ),
             ),

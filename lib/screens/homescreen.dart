@@ -1,10 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// import 'package:shapeup/screens/notificationscreen.dart';
 import 'package:shapeup/screens/profilescreen.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../services/stepstracker.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -14,6 +16,74 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String authName = '';
+  String? firstName;
+  String? lastName;
+  String? burn = '';
+  String? calories = '';
+  String? glasses = '';
+  DateTime date = DateTime.now();
+  String? week;
+  String? day;
+  String? month;
+  String? sleeptime = '';
+
+  asyncFunc() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      authName = prefs.getString("authName")!;
+
+      int firstSpace = authName.indexOf(" ");
+      firstName = authName.substring(0, firstSpace);
+      sleeptime = prefs.getString("sleeptime");
+      calories = prefs.getString("calories");
+      glasses = prefs.getString("glasses");
+      burn = prefs.getString("burn");
+    });
+  }
+
+  setSleeptTime() async {
+    TimeOfDay? pickedTime = await showTimePicker(
+      initialTime: TimeOfDay.now(),
+      context: context, //context of current state
+    );
+    if (pickedTime != null) {
+      DateTime parsedTime = DateFormat.jm()
+          // ignore: use_build_context_synchronously
+          .parse(pickedTime.format(context).toString());
+      //converting to DateTime so that we can further format on different pattern.
+
+      String formattedTime = DateFormat('h:mma').format(parsedTime);
+      debugPrint(formattedTime);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString("sleeptime", formattedTime);
+
+      setState(() {
+        sleeptime = prefs.getString("sleeptime");
+        User? user = FirebaseAuth.instance.currentUser;
+        FirebaseFirestore.instance.collection('profile').doc(user?.uid).update({
+          'sleeptime': sleeptime,
+        });
+      });
+      //DateFormat() is from intl package, you can format the time on any pattern you need.
+    } else {
+      debugPrint("Time is not selected");
+    }
+  }
+
+  @override
+  void initState() {
+    setState(() {
+      asyncFunc();
+
+      week = DateFormat('EEEE').format(date);
+      day = DateFormat('d').format(date);
+      month = DateFormat('MMMM').format(date);
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Hey, Aadarsh !",
+                      Text("Hey, $firstName",
                           textAlign: TextAlign.center,
                           style: GoogleFonts.montserrat(
                               color: Colors.grey,
@@ -70,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(
                         height: 3,
                       ),
-                      Text("Thrusday, 8 July",
+                      Text("$week, $day $month",
                           textAlign: TextAlign.center,
                           style: GoogleFonts.montserrat(
                               color: Colors.black,
@@ -146,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   width: 20,
                                 ),
                                 Text(
-                                  "Eat upto 3000 cal",
+                                  "Eat upto $calories cal",
                                   textAlign: TextAlign.left,
                                   style: GoogleFonts.montserrat(
                                       letterSpacing: .5,
@@ -188,7 +258,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: const Color.fromARGB(255, 227, 252, 255),
                         child: SizedBox(
                           child: Padding(
-                            padding: const EdgeInsets.all(15),
+                            padding: const EdgeInsets.all(10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -213,7 +283,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   height: 15,
                                 ),
                                 Text(
-                                  "Burn atleast 400",
+                                  "Burn atleast $burn",
                                   textAlign: TextAlign.left,
                                   style: GoogleFonts.montserrat(
                                       color: Colors.black,
@@ -270,7 +340,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   height: 15,
                                 ),
                                 Text(
-                                  "Drink 10 glasses",
+                                  "Drink $glasses glasses",
                                   textAlign: TextAlign.left,
                                   style: GoogleFonts.montserrat(
                                       color: Colors.black,
@@ -312,11 +382,46 @@ class _HomeScreenState extends State<HomeScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
+                                  "Sleep Time : $sleeptime",
+                                  textAlign: TextAlign.left,
+                                  style: GoogleFonts.montserrat(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                IconButton(
+                                  padding: const EdgeInsets.all(0),
+                                  iconSize: 20,
+                                  icon: const Icon(Icons.edit),
+                                  onPressed: () async {
+                                    setSleeptTime();
+                                  },
+                                ),
+                              ],
+                            ),
+                          ))),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Card(
+                      elevation: 1,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                      ),
+                      color: const Color.fromARGB(255, 240, 240, 240),
+                      child: SizedBox(
+                          width: double.infinity,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 15, right: 0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
                                   "View all trackers",
                                   textAlign: TextAlign.left,
                                   style: GoogleFonts.montserrat(
                                       color: Colors.black,
-                                      fontSize: 14,
+                                      fontSize: 15,
                                       fontWeight: FontWeight.w600),
                                 ),
                                 IconButton(

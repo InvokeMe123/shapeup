@@ -4,7 +4,9 @@ import 'package:shapeup/models/exercise_model.dart';
 
 class ExerciseDatabase {
   final String? docID;
-  ExerciseDatabase({this.docID});
+  final int? dayindex;
+
+  ExerciseDatabase({this.docID, this.dayindex});
   final CollectionReference exercisecollection =
       FirebaseFirestore.instance.collection('exercise');
 
@@ -12,6 +14,7 @@ class ExerciseDatabase {
     return snapshot.docs.map((doc) {
       return ExerciseModel(
         id: doc.id,
+        number: doc['number'],
         type: doc['type'] ?? '',
       );
     }).toList();
@@ -26,7 +29,7 @@ class ExerciseDatabase {
     return snapshot.docs
         .map((doc) => ExerciseDetailModel(
               name: doc['name'] ?? '',
-              counter: doc['counter'] ?? '',
+              counter: doc['counter'].toString(),
               description: doc['description'] ?? '',
               gif: doc['gif'] ?? '',
             ))
@@ -36,8 +39,15 @@ class ExerciseDatabase {
   Stream<List<ExerciseDetailModel>> get listExerciseInfo {
     return exercisecollection
         .doc(docID)
-        .collection("day1")
+        .collection("day$dayindex")
         .snapshots()
         .map(_dayExericsePlan);
+  }
+
+  final CollectionReference doc =
+      FirebaseFirestore.instance.collection('exercise');
+
+  Stream<DocumentSnapshot<Object?>> get list {
+    return doc.doc(docID).snapshots();
   }
 }

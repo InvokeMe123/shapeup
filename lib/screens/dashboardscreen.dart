@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shapeup/screens/dietscreen.dart';
-import 'package:shapeup/screens/exercisedaylist.dart';
+import 'package:shapeup/screens/exercisescreen.dart';
 import 'package:shapeup/screens/homescreen.dart';
 import 'package:shapeup/screens/notificationscreen.dart';
 import 'package:shapeup/screens/premiumscreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:shapeup/screens/workoutscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DashBoardScreen extends StatefulWidget {
@@ -19,6 +18,12 @@ class DashBoardScreen extends StatefulWidget {
 asyncFunc() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    for (final providerProfile in user.providerData) {
+      final name = providerProfile.displayName;
+      prefs.setString("authName", name!);
+    }
+  }
   FirebaseFirestore.instance
       .collection('profile')
       .doc(user?.uid)
@@ -33,6 +38,10 @@ asyncFunc() async {
       prefs.setString("height", (data['height']));
       prefs.setString("weight", (data['weight']));
       prefs.setBool("premium", (data['premium']));
+      prefs.setString("calories", (data['calories']));
+      prefs.setString("glasses", (data['glasses']));
+      prefs.setString("burn", (data['burn']));
+      prefs.setString("sleeptime", (data['sleeptime']));
     }
   });
 }
@@ -40,16 +49,13 @@ asyncFunc() async {
 class _DashBoardScreenState extends State<DashBoardScreen> {
   @override
   void initState() {
-    final CollectionReference exercisecollection =
-        FirebaseFirestore.instance.collection('exercise');
-
     asyncFunc();
     super.initState();
   }
 
   final List<Widget> screens = [
     const HomeScreen(),
-    const ExerciseList(),
+    const ExerciseScreen(),
     const DietScreen(),
     const NotificationScreen(),
     const PremiumScreen(),

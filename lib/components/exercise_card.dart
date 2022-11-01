@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shapeup/models/exercise_model.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shapeup/screens/exercisedaylistdetail.dart';
+import 'package:shapeup/screens/exercisedetail.dart';
 
 class ExerciseCard extends StatelessWidget {
   final ExerciseModel exercisemodel;
@@ -13,8 +13,7 @@ class ExerciseCard extends StatelessWidget {
       onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (_) =>
-                  ExerciseDayListDetail(exercisemodel: exercisemodel))),
+              builder: (_) => ExerciseDetail(exercisemodel: exercisemodel))),
       child: Card(
         margin: const EdgeInsets.all(10),
         shape: const RoundedRectangleBorder(

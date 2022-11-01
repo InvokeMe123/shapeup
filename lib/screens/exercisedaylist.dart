@@ -1,30 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shapeup/components/exercise_card.dart';
 import 'package:shapeup/models/exercise_model.dart';
+import 'package:shapeup/screens/exercisedaydetail.dart';
 import 'package:shapeup/services/exercisedb.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
-class ExerciseList extends StatefulWidget {
-  const ExerciseList({Key? key}) : super(key: key);
-
-  @override
-  State<ExerciseList> createState() => _ExerciseListState();
-}
-
-class _ExerciseListState extends State<ExerciseList> {
-  User? user = FirebaseAuth.instance.currentUser;
-  final userId = FirebaseAuth.instance.currentUser?.uid;
-
-  bool? premium;
-  Future asyncFunc() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    setState(() {
-      premium = prefs.getBool("premium");
-    });
-  }
+class ExerciseDayList extends StatelessWidget {
+  final ExerciseModel exercisemodel;
+  const ExerciseDayList({Key? key, required this.exercisemodel})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,16 +27,46 @@ class _ExerciseListState extends State<ExerciseList> {
                           const TextStyle(color: Colors.black, fontSize: 20)))),
         ),
         body: SafeArea(
-          child: StreamBuilder<List<ExerciseModel>>(
-            stream: ExerciseDatabase().exerciseInfo,
-            builder: ((context, snapshot) {
+          child: StreamBuilder<DocumentSnapshot<Object?>>(
+            stream: ExerciseDatabase(docID: exercisemodel.id).list,
+            builder: ((context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
                 return ListView.builder(
                     shrinkWrap: true,
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      return ExerciseCard(
-                        exercisemodel: snapshot.data![index],
+                    itemCount: exercisemodel.number,
+                    itemBuilder: (context, listindex) {
+                      return GestureDetector(
+                        onTap: () => {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => ExerciseDayDetail(
+                                        dayindex: listindex + 1,
+                                        docId: exercisemodel.id,
+                                      ))),
+                        },
+                        child: Card(
+                          margin: const EdgeInsets.all(10),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                          elevation: 10.0,
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Text(
+                                  "Day ${listindex + 1} ",
+                                  textAlign: TextAlign.left,
+                                  style: GoogleFonts.montserrat(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
                       );
                     });
               } else {

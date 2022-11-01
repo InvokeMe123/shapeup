@@ -3,14 +3,18 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shapeup/screens/restscreen.dart';
 
-class WorkoutRunningScreen extends StatefulWidget {
-  const WorkoutRunningScreen({Key? key}) : super(key: key);
+class ExerciseRunScreen extends StatefulWidget {
+  // final ExerciseDetailModel exerciseDetailModel;
+
+  const ExerciseRunScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<WorkoutRunningScreen> createState() => _WorkoutRunningScreenState();
+  State<ExerciseRunScreen> createState() => _ExerciseRunScreenState();
 }
 
-class _WorkoutRunningScreenState extends State<WorkoutRunningScreen> {
+class _ExerciseRunScreenState extends State<ExerciseRunScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +58,7 @@ class _WorkoutRunningScreenState extends State<WorkoutRunningScreen> {
                 height: 50,
               ),
               Text(
-                "Timer or Count",
+                "30x",
                 style: GoogleFonts.notoSansMono(
                     color: Colors.black.withOpacity(.80),
                     fontSize: 30,

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:shapeup/models/daily_diet_model.dart';
 import 'package:shapeup/services/database_service.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class DailyDietPlanPage extends StatefulWidget {
   final String docId;
@@ -37,7 +39,7 @@ class _DailyDietPlanPageState extends State<DailyDietPlanPage> {
           StreamBuilder<List<DailyDietModel>>(
               stream: DatabaseService(docID: widget.docId).dailyDietInfo,
               builder: (context, snapshot) {
-                debugPrint(snapshot.data.toString());
+                print(widget.docId);
                 if (snapshot.hasData) {
                   return Expanded(
                     child: PageView.builder(
@@ -50,39 +52,88 @@ class _DailyDietPlanPageState extends State<DailyDietPlanPage> {
                       }),
                       itemBuilder: (context, index) {
                         setLength(snapshot.data!.length);
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Day ${index + 1}',
-                              style: const TextStyle(
-                                  fontSize: 25, fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            DietDetailWidget(
-                              title: 'Breakfast',
-                              data: snapshot.data![index].breakfast,
-                            ),
-                            DietDetailWidget(
-                              title: 'AM Snack',
-                              data: snapshot.data![index].amSnack,
-                            ),
-                            DietDetailWidget(
-                              title: 'Lunch',
-                              data: snapshot.data![index].lunch,
-                            ),
-                            DietDetailWidget(
-                              title: 'PM Snack',
-                              data: snapshot.data![index].pmSnack,
-                            ),
-                            DietDetailWidget(
-                              title: 'Dinner',
-                              data: snapshot.data![index].dinner,
-                            ),
-                          ],
-                        ).padding(top: 20, horizontal: 20);
+                        print(snapshot.data![index].dinner);
+                        return SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                snapshot.data![index].id,
+                                style: const TextStyle(
+                                    fontSize: 25, fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              DietDetailWidget(
+                                title: 'Breakfast',
+                                data: snapshot.data![index].breakfast,
+                              ),
+                              DietDetailWidget(
+                                title: 'AM Snack',
+                                data: snapshot.data![index].amSnack,
+                              ),
+                              DietDetailWidget(
+                                title: 'Lunch',
+                                data: snapshot.data![index].lunch,
+                              ),
+                              DietDetailWidget(
+                                title: 'PM Snack',
+                                data: snapshot.data![index].pmSnack,
+                              ),
+                              DietDetailWidget(
+                                title: 'Dinner',
+                                data: snapshot.data![index].dinner,
+                              ),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.45,
+                                width: double.infinity,
+                                child: Stack(
+                                  children: [
+                                    Positioned.fill(
+                                      child: ImageSlideshow(
+                                        width: double.infinity,
+                                        initialPage: 0,
+                                        indicatorColor: Colors.white,
+                                        indicatorBackgroundColor: Colors.black,
+                                        autoPlayInterval: 3000,
+                                        isLoop: true,
+                                        children: [
+                                          CachedNetworkImage(
+                                            imageUrl: snapshot
+                                                .data![index].breakfastImage,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          CachedNetworkImage(
+                                            imageUrl: snapshot
+                                                .data![index].amSnackImage,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          CachedNetworkImage(
+                                            imageUrl: snapshot
+                                                .data![index].lunchImage,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          CachedNetworkImage(
+                                            imageUrl: snapshot
+                                                .data![index].pmSnackImage,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          CachedNetworkImage(
+                                            imageUrl: snapshot
+                                                .data![index].dinnerImage,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ).padding(top: 20, horizontal: 20),
+                        );
                       },
                     ),
                   );

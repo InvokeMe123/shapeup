@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import '../services/firebaseservices.dart';
 import 'package:shapeup/screens/logintoscreen.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -15,10 +13,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  User? user = FirebaseAuth.instance.currentUser;
-  final userId = FirebaseAuth.instance.currentUser?.uid;
-
-  var authName = '';
+  String? authName;
   double? bmi;
   String? height;
   String? weight;
@@ -31,6 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       weight = prefs.getString("weight");
       prefs.getString("age");
       prefs.getBool("premium");
+      authName = prefs.getString("authName");
     });
   }
 
@@ -42,16 +38,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     asyncFunc();
-    User? user = FirebaseAuth.instance.currentUser;
-
-    if (user != null) {
-      for (final providerProfile in user.providerData) {
-        final name = providerProfile.displayName;
-        setState(() {
-          authName = name!;
-        });
-      }
-    }
 
     super.initState();
   }
@@ -123,7 +109,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        Text(authName,
+                        Text("$authName",
                             style: GoogleFonts.montserrat(
                                 letterSpacing: .5,
                                 color: Colors.black,

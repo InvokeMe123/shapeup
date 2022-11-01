@@ -16,12 +16,36 @@ class SettingUpScreen extends StatefulWidget {
 
 class _SettingUpScreenState extends State<SettingUpScreen> {
   User? user = FirebaseAuth.instance.currentUser;
+  String? authName;
+
   int? height;
   int? weight;
+  int? age;
+  String? name;
+  String? email;
+  String? profilePhoto;
+  int calorie = 0;
+  int burn = 0;
+  double bmr = 0;
+  double amr = 0;
+
+  int glasses = 0;
+  double water = 0;
+
   double bmi = 0;
+
+  String? gender;
 
   @override
   void initState() {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      for (final providerProfile in user.providerData) {
+        name = providerProfile.displayName;
+        email = providerProfile.email;
+        profilePhoto = providerProfile.photoURL;
+      }
+    }
     FirebaseFirestore.instance
         .collection('profile')
         .doc(user?.uid)
@@ -32,14 +56,42 @@ class _SettingUpScreenState extends State<SettingUpScreen> {
             documentSnapshot.data() as Map<String, dynamic>;
         weight = int.tryParse(data['weight']);
         height = int.tryParse(data['height']);
-        print(height);
-        print(weight);
+        age = int.tryParse(data['age']);
+        gender = data['gender'];
+
+// calorie counter
+        if (gender == "male") {
+          bmr = 66.47 + (13.75 * weight!) + (5.003 * height!) - (6.755 * age!);
+        } else if (gender == "female") {
+          bmr = 655.1 + (13.75 * weight!) + (5.003 * height!) - (6.755 * age!);
+        }
+        amr = bmr * 1.375;
+        int factor = amr ~/ 100;
+        calorie = factor * 100;
+        print(calorie);
+
+//burn calores
+        burn = (.2 * calorie).toInt();
+        print(burn);
+
+// bmi
         bmi = (weight! / pow(height! / 100, 2));
         print(bmi);
+
+//glasses of water
+        water = (weight! * 2.20462) / 2;
+        glasses = water ~/ 10;
+        print(water);
       } else {
         print('Document does not exist on the database');
       }
       FirebaseFirestore.instance.collection('profile').doc(user?.uid).update({
+        'name': name,
+        'email': email,
+        'profilePhoto': profilePhoto,
+        'burn': burn.toString(),
+        'calories': calorie.toString(),
+        'glasses': glasses.toString(),
         'BMI': bmi,
       }).then((value) => Navigator.pushReplacement(
           context,
@@ -57,9 +109,6 @@ class _SettingUpScreenState extends State<SettingUpScreen> {
     return const Scaffold(
         backgroundColor: Colors.white,
         // ignore: sized_box_for_whitespace
-        body: SafeArea(
-            child: Center(
-          child: Text("setting up the profile"),
-        )));
+        body: SafeArea(child: Center(child: CircularProgressIndicator())));
   }
 }
