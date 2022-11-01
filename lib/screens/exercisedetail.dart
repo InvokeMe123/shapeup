@@ -1,7 +1,9 @@
+// import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shapeup/models/exercise_model.dart';
 import 'package:shapeup/screens/exercisedaylist.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ExerciseDetail extends StatelessWidget {
   final ExerciseModel exercisemodel;
@@ -21,11 +23,19 @@ class ExerciseDetail extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Image.network(
+                exercisemodel.image,
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
               Text(
                 exercisemodel.type,
-                style: const TextStyle(
-                  fontSize: 16,
-                ),
+                style: GoogleFonts.montserrat(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600),
                 textAlign: TextAlign.justify,
               ),
               Center(

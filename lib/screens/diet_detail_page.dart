@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shapeup/screens/daily_diet_plan_page.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../models/diet_model.dart';
 
@@ -21,11 +22,11 @@ class DietDetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.network(
-                dietModel.imagePath,
+              CachedNetworkImage(
+                imageUrl: dietModel.imagePath,
+                fit: BoxFit.cover,
                 height: 180,
                 width: double.infinity,
-                fit: BoxFit.fitWidth,
               ),
               const SizedBox(
                 height: 15,

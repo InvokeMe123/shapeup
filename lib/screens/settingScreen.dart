@@ -24,6 +24,8 @@ class _SettingUpScreenState extends State<SettingUpScreen> {
   String? name;
   String? email;
   String? profilePhoto;
+  String? uid;
+
   int calorie = 0;
   int burn = 0;
   double bmr = 0;
@@ -44,6 +46,7 @@ class _SettingUpScreenState extends State<SettingUpScreen> {
         name = providerProfile.displayName;
         email = providerProfile.email;
         profilePhoto = providerProfile.photoURL;
+        uid = providerProfile.uid;
       }
     }
     FirebaseFirestore.instance
@@ -86,6 +89,7 @@ class _SettingUpScreenState extends State<SettingUpScreen> {
         print('Document does not exist on the database');
       }
       FirebaseFirestore.instance.collection('profile').doc(user?.uid).update({
+        "uid": uid,
         'name': name,
         'email': email,
         'profilePhoto': profilePhoto,

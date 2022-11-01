@@ -1,20 +1,47 @@
+import 'dart:async';
+
 import "package:flutter/material.dart";
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shapeup/screens/restscreen.dart';
 
-class ExerciseRunScreen extends StatefulWidget {
-  // final ExerciseDetailModel exerciseDetailModel;
+import '../models/exercise_detail_model.dart';
 
-  const ExerciseRunScreen({
-    Key? key,
-  }) : super(key: key);
+class ExerciseRunScreen extends StatefulWidget {
+  final ExerciseDetailModel exercisedetailmodel;
+  const ExerciseRunScreen({Key? key, required this.exercisedetailmodel})
+      : super(key: key);
 
   @override
   State<ExerciseRunScreen> createState() => _ExerciseRunScreenState();
 }
 
 class _ExerciseRunScreenState extends State<ExerciseRunScreen> {
+  int? timeleft;
+  startTimer() {
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        timeleft = int.parse(widget.exercisedetailmodel.counter);
+        timeLeft--;
+      });
+
+      if (timeLeft == 0) {
+        Navigator.push(
+            context,
+            PageTransition(
+                type: PageTransitionType.fade,
+                duration: const Duration(milliseconds: 250),
+                child: const RestScreen()));
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    startTimer();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,13 +69,16 @@ class _ExerciseRunScreenState extends State<ExerciseRunScreen> {
                         BorderSide(color: Color.fromARGB(255, 153, 152, 152)),
                   ),
                 ),
-                child: Image.asset("assets/splash.png"),
+                child: Image.network(
+                  widget.exercisedetailmodel.gif,
+                  fit: BoxFit.contain,
+                ),
               ),
               const SizedBox(
                 height: 25,
               ),
               Text(
-                "Jumping Jack",
+                widget.exercisedetailmodel.name,
                 style: GoogleFonts.notoSansMono(
                     color: Colors.black.withOpacity(.80),
                     fontSize: 20,
@@ -57,45 +87,63 @@ class _ExerciseRunScreenState extends State<ExerciseRunScreen> {
               const SizedBox(
                 height: 50,
               ),
-              Text(
-                "30x",
-                style: GoogleFonts.notoSansMono(
-                    color: Colors.black.withOpacity(.80),
-                    fontSize: 30,
-                    fontWeight: FontWeight.w700),
-              ),
+              widget.exercisedetailmodel.duration == "true"
+                  ? Text(
+                      "${timeLeft}s",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.notoSansMono(
+                          color: Colors.black.withOpacity(.80),
+                          fontSize: 36,
+                          fontWeight: FontWeight.w700),
+                    )
+                  : Text(
+                      widget.exercisedetailmodel.counter,
+                      style: GoogleFonts.notoSansMono(
+                          color: Colors.black.withOpacity(.80),
+                          fontSize: 30,
+                          fontWeight: FontWeight.w700),
+                    ),
               const SizedBox(
                 height: 50,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 0),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          PageTransition(
-                              type: PageTransitionType.fade,
-                              duration: const Duration(milliseconds: 250),
-                              child: const RestScreen()));
-                    },
-                    style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        primary: const Color.fromARGB(255, 227, 252, 255),
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        textStyle: const TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.bold)),
-                    child: Text(
-                      "Done",
+              widget.exercisedetailmodel.duration == "true"
+                  ? Text(
+                      "Wait",
                       style: GoogleFonts.notoSansMono(
                           color: Colors.black.withOpacity(.75),
                           fontSize: 16,
                           fontWeight: FontWeight.w700),
+                    )
+                  : Padding(
+                      padding:
+                          const EdgeInsets.only(left: 20, right: 20, bottom: 0),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.fade,
+                                    duration: const Duration(milliseconds: 250),
+                                    child: const RestScreen()));
+                          },
+                          style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              primary: const Color.fromARGB(255, 227, 252, 255),
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              textStyle: const TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.bold)),
+                          child: Text(
+                            "Done",
+                            style: GoogleFonts.notoSansMono(
+                                color: Colors.black.withOpacity(.75),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
             ]),
             Align(
                 alignment: Alignment.bottomCenter,

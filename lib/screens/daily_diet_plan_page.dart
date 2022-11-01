@@ -39,7 +39,6 @@ class _DailyDietPlanPageState extends State<DailyDietPlanPage> {
           StreamBuilder<List<DailyDietModel>>(
               stream: DatabaseService(docID: widget.docId).dailyDietInfo,
               builder: (context, snapshot) {
-                print(widget.docId);
                 if (snapshot.hasData) {
                   return Expanded(
                     child: PageView.builder(
@@ -52,7 +51,6 @@ class _DailyDietPlanPageState extends State<DailyDietPlanPage> {
                       }),
                       itemBuilder: (context, index) {
                         setLength(snapshot.data!.length);
-                        print(snapshot.data![index].dinner);
                         return SingleChildScrollView(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,

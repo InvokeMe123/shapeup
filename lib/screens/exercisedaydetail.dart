@@ -25,6 +25,7 @@ class _ExerciseDayDetailState extends State<ExerciseDayDetail> {
   int currentIndex = 0;
   int daysLength = 0;
   String? id;
+  dynamic data;
 
   setLength(int length) {
     Future.delayed(const Duration(seconds: 0), () {
@@ -69,92 +70,103 @@ class _ExerciseDayDetailState extends State<ExerciseDayDetail> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return Expanded(
-                    child: PageView.builder(
-                      controller: controller,
-                      itemCount: snapshot.data!.length,
-                      onPageChanged: ((value) {
-                        setState(() {
-                          currentIndex = value;
-                        });
-                      }),
-                      itemBuilder: (context, index) {
-                        setLength(snapshot.data!.length);
+                      flex: 1,
+                      child: Column(children: [
+                        Flexible(
+                          child: PageView.builder(
+                            controller: controller,
+                            itemCount: snapshot.data!.length,
+                            onPageChanged: ((value) {
+                              setState(() {
+                                currentIndex = value;
+                              });
+                            }),
+                            itemBuilder: (context, index) {
+                              setLength(snapshot.data!.length);
 
-                        return snapshot.data![index].name == "restday"
-                            ? Center(
-                                child: Text(
-                                  "Take Rest",
-                                  style: GoogleFonts.notoSansMono(
-                                      color: Colors.black,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                              )
-                            : Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '${index + 1}',
-                                    style: const TextStyle(
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold),
+                              return snapshot.data![index].name == "restday"
+                                  ? Center(
+                                      child: Text(
+                                        "Take Rest",
+                                        style: GoogleFonts.notoSansMono(
+                                            color: Colors.black,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                    )
+                                  : Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '${index + 1}',
+                                          style: const TextStyle(
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        DietDetailWidget(
+                                          title: 'Name',
+                                          data: snapshot.data![index].name,
+                                        ),
+                                        DietDetailWidget(
+                                          title: 'Description',
+                                          data:
+                                              snapshot.data![index].description,
+                                        ),
+                                        DietDetailWidget(
+                                          title: 'Counter',
+                                          data: snapshot.data![index].counter
+                                              .toString(),
+                                        ),
+                                        Image.network(
+                                          snapshot.data![index].gif,
+                                        ).center().expanded(),
+                                      ],
+                                    ).padding(top: 20, horizontal: 20);
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                            width: double.infinity,
+                            child: Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        PageTransition(
+                                            type: PageTransitionType.fade,
+                                            duration: const Duration(
+                                                milliseconds: 250),
+                                            child: ExerciseRunScreen(
+                                                exercisedetailmodel:
+                                                    snapshot.data![0])));
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      elevation: 0,
+                                      primary: const Color.fromARGB(
+                                          255, 227, 252, 255),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 14),
+                                      textStyle: const TextStyle(
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.bold)),
+                                  child: Text(
+                                    "Start",
+                                    style: GoogleFonts.notoSansMono(
+                                        color: Colors.black.withOpacity(.75),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700),
                                   ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  DietDetailWidget(
-                                    title: 'Name',
-                                    data: snapshot.data![index].name,
-                                  ),
-                                  DietDetailWidget(
-                                    title: 'Description',
-                                    data: snapshot.data![index].description,
-                                  ),
-                                  DietDetailWidget(
-                                    title: 'Counter',
-                                    data: snapshot.data![index].counter
-                                        .toString(),
-                                  ),
-                                  Image.network(
-                                    snapshot.data![index].gif,
-                                  ).center().expanded(),
-                                ],
-                              ).padding(top: 20, horizontal: 20);
-                      },
-                    ),
-                  );
+                                )))
+                      ]));
                 } else {
                   return const Center(child: CircularProgressIndicator());
                 }
               }),
-          SizedBox(
-            width: double.infinity,
-            child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        PageTransition(
-                            type: PageTransitionType.fade,
-                            duration: const Duration(milliseconds: 250),
-                            child: const ExerciseRunScreen()));
-                  },
-                  style: ElevatedButton.styleFrom(
-                      elevation: 0,
-                      primary: const Color.fromARGB(255, 227, 252, 255),
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      textStyle: const TextStyle(
-                          fontSize: 30, fontWeight: FontWeight.bold)),
-                  child: Text(
-                    "Start",
-                    style: GoogleFonts.notoSansMono(
-                        color: Colors.black.withOpacity(.75),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700),
-                  ),
-                )),
-          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

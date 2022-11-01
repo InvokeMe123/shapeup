@@ -15,15 +15,19 @@ class ExerciseCard extends StatelessWidget {
           MaterialPageRoute(
               builder: (_) => ExerciseDetail(exercisemodel: exercisemodel))),
       child: Card(
-        margin: const EdgeInsets.all(10),
+        margin: const EdgeInsets.all(15),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         elevation: 10.0,
-        child: Row(
+        child: Column(
           children: [
+            Image.network(
+              exercisemodel.image,
+              fit: BoxFit.contain,
+            ),
             Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.only(top: 10, bottom: 10),
               child: Text(
                 exercisemodel.type,
                 textAlign: TextAlign.left,
@@ -32,7 +36,7 @@ class ExerciseCard extends StatelessWidget {
                     fontSize: 16,
                     fontWeight: FontWeight.w600),
               ),
-            )
+            ),
           ],
         ),
       ),

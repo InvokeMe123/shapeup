@@ -16,6 +16,7 @@ class ExerciseDatabase {
         id: doc.id,
         number: doc['number'],
         type: doc['type'] ?? '',
+        image: doc['image'] ?? '',
       );
     }).toList();
   }
@@ -31,6 +32,7 @@ class ExerciseDatabase {
               name: doc['name'] ?? '',
               counter: doc['counter'].toString(),
               description: doc['description'] ?? '',
+              duration: doc['duration'].toString(),
               gif: doc['gif'] ?? '',
             ))
         .toList();
