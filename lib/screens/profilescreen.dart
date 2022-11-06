@@ -5,6 +5,8 @@ import '../services/firebaseservices.dart';
 import 'package:shapeup/screens/logintoscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'editprofilescreen.dart';
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
@@ -69,7 +71,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     iconSize: 20,
                     padding: const EdgeInsets.all(0),
                     icon: const Icon(Icons.edit),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                          context,
+                          PageTransition(
+                              type: PageTransitionType.fade,
+                              duration: const Duration(milliseconds: 250),
+                              child: const EditProfileScreen()));
+                    },
                   )),
             )
           ],

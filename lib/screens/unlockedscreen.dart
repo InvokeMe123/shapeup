@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:shapeup/components/premiumdietcard.dart';
 import 'package:shapeup/models/diet_model.dart';
+// import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 class UnlockedScreen extends StatefulWidget {
   const UnlockedScreen({Key? key}) : super(key: key);
@@ -12,6 +13,7 @@ class UnlockedScreen extends StatefulWidget {
 }
 
 class _UnlockedScreenState extends State<UnlockedScreen> {
+  // static const number = '982389232';
   final colorizeColors = [
     Colors.teal,
     Colors.blue,

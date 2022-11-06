@@ -17,28 +17,37 @@ class ExerciseRunScreen extends StatefulWidget {
 }
 
 class _ExerciseRunScreenState extends State<ExerciseRunScreen> {
-  int? timeleft;
-  startTimer() {
+  int time = 10;
+  startCounter() {
     Timer.periodic(const Duration(seconds: 1), (timer) {
+      time = int.parse(widget.exercisedetailmodel.counter);
+
       setState(() {
-        timeleft = int.parse(widget.exercisedetailmodel.counter);
-        timeLeft--;
+        time--;
       });
 
-      if (timeLeft == 0) {
+      if (time == 0) {
         Navigator.push(
             context,
             PageTransition(
                 type: PageTransitionType.fade,
                 duration: const Duration(milliseconds: 250),
                 child: const RestScreen()));
+        setAgain();
       }
+    });
+  }
+
+  setAgain() {
+    setState(() {
+      time = 20;
     });
   }
 
   @override
   void initState() {
-    startTimer();
+    // timeleft = int.parse(widget.exercisedetailmodel.counter);
+    startCounter();
     super.initState();
   }
 
@@ -89,7 +98,7 @@ class _ExerciseRunScreenState extends State<ExerciseRunScreen> {
               ),
               widget.exercisedetailmodel.duration == "true"
                   ? Text(
-                      "${timeLeft}s",
+                      "${time}s",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.notoSansMono(
                           color: Colors.black.withOpacity(.80),
@@ -163,7 +172,14 @@ class _ExerciseRunScreenState extends State<ExerciseRunScreen> {
                         ),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              PageTransition(
+                                  type: PageTransitionType.fade,
+                                  duration: const Duration(milliseconds: 250),
+                                  child: const RestScreen()));
+                        },
                         child: Text(
                           "Skip",
                           style: GoogleFonts.notoSansMono(

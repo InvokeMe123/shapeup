@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:shapeup/models/subscription_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shapeup/screens/dashboardscreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SubscriptionPage extends StatefulWidget {
   const SubscriptionPage({Key? key}) : super(key: key);
@@ -20,8 +22,37 @@ const successmessage = SnackBar(
 );
 
 class _SubscriptionPageState extends State<SubscriptionPage> {
+  late bool premium;
+  String? notificationMessage;
+  String? date;
+  DateTime subsDate = DateTime.now();
+  var newDate;
+
+  setPremium() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      premium = true;
+      prefs.setBool("premium", premium);
+    });
+    if (premium == true) {
+      notificationMessage = "Your premium has been activated till $date";
+      FirebaseFirestore.instance
+          .collection('notifications')
+          .doc(user?.uid)
+          .collection("list")
+          .doc()
+          .set({
+        'message': notificationMessage,
+      });
+    }
+  }
+
   @override
   void initState() {
+    // month = DateFormat('MMMM').format(subsDate);
+    newDate = DateTime(subsDate.year, subsDate.month + 1, subsDate.day);
+    date = DateFormat('MMMd').format(newDate);
+
     super.initState();
   }
 
@@ -190,6 +221,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                           .update({
                         'premium': true,
                       }),
+                      setPremium(),
                       Future(() {
                         const successsnackBar =
                             SnackBar(content: Text('Payment Success'));

@@ -17,7 +17,7 @@ class SettingUpScreen extends StatefulWidget {
 class _SettingUpScreenState extends State<SettingUpScreen> {
   User? user = FirebaseAuth.instance.currentUser;
   String? authName;
-
+  String? notificationMessage;
   int? height;
   int? weight;
   int? age;
@@ -40,6 +40,7 @@ class _SettingUpScreenState extends State<SettingUpScreen> {
 
   @override
   void initState() {
+    notificationMessage = "Your premium is not activated";
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       for (final providerProfile in user.providerData) {
@@ -88,6 +89,16 @@ class _SettingUpScreenState extends State<SettingUpScreen> {
       } else {
         print('Document does not exist on the database');
       }
+
+      FirebaseFirestore.instance
+          .collection('notifications')
+          .doc(user?.uid)
+          .collection("list")
+          .doc()
+          .set({
+        'message': notificationMessage,
+      });
+
       FirebaseFirestore.instance.collection('profile').doc(user?.uid).update({
         "uid": uid,
         'name': name,

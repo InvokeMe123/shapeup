@@ -12,9 +12,9 @@ class RestScreen extends StatefulWidget {
   State<RestScreen> createState() => _RestScreenState();
 }
 
-int timeLeft = 20;
-
 class _RestScreenState extends State<RestScreen> {
+  int timeLeft = 20;
+
   setAgain() {
     setState(() {
       timeLeft = 20;

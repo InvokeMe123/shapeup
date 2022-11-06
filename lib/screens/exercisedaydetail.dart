@@ -27,6 +27,8 @@ class _ExerciseDayDetailState extends State<ExerciseDayDetail> {
   String? id;
   dynamic data;
 
+  String? save;
+
   setLength(int length) {
     Future.delayed(const Duration(seconds: 0), () {
       setState(() {
@@ -227,4 +229,6 @@ class DietDetailWidget extends StatelessWidget {
       ),
     ).padding(bottom: 15);
   }
+
+  void save() {}
 }

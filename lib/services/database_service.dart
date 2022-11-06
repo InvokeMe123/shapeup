@@ -54,4 +54,7 @@ class DatabaseService {
   Stream<List<DietModel>> get dietInfo {
     return dietCollection.snapshots().map(_dietListFromSnapshot);
   }
+  // Stream<List<DietModel>> get notificationlist {
+  //   return dietCollection.snapshots().map(_dietListFromSnapshot);
+  // }
 }

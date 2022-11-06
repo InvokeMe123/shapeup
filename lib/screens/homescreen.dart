@@ -16,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String authName = '';
+  String? authName;
   String? firstName;
   String? lastName;
   String? burn = '';
@@ -32,10 +32,12 @@ class _HomeScreenState extends State<HomeScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     setState(() {
-      authName = prefs.getString("authName")!;
+      authName = prefs.getString("authName");
+      if (authName != null) {
+        int firstSpace = authName!.indexOf(" ");
+        firstName = authName!.substring(0, firstSpace);
+      }
 
-      int firstSpace = authName.indexOf(" ");
-      firstName = authName.substring(0, firstSpace);
       sleeptime = prefs.getString("sleeptime");
       calories = prefs.getString("calories");
       glasses = prefs.getString("glasses");

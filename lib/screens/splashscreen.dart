@@ -2,9 +2,11 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shapeup/screens/agescreen.dart';
 import 'package:shapeup/screens/dashboardscreen.dart';
 import 'package:shapeup/screens/logintoscreen.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -14,10 +16,18 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  bool pData = false;
   @override
   void initState() {
     User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {}
+
+    FirebaseFirestore.instance
+        .collection('profile')
+        .doc(user?.uid)
+        .get()
+        .then((DocumentSnapshot snapshot) => {
+              if (snapshot.exists) {pData = true}
+            });
 
     Timer(
         const Duration(seconds: 3),
@@ -27,7 +37,9 @@ class _SplashScreenState extends State<SplashScreen> {
                 type: PageTransitionType.fade,
                 duration: const Duration(milliseconds: 300),
                 child: user != null
-                    ? const DashBoardScreen()
+                    ? (pData == true
+                        ? const DashBoardScreen()
+                        : const AgeScreen())
                     : const LogIntoScreen(),
               ),
             ));

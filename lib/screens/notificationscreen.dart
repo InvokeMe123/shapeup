@@ -1,13 +1,49 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shapeup/services/notification_services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class NotificationScreen extends StatelessWidget {
+import '../components/notificationcard.dart';
+import '../models/notification_model.dart';
+
+class NotificationScreen extends StatefulWidget {
   const NotificationScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    List<int> notificationlist = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  State<NotificationScreen> createState() => _NotificationScreenState();
+}
 
+User? user = FirebaseAuth.instance.currentUser;
+final userId = FirebaseAuth.instance.currentUser?.uid;
+const successmessage = SnackBar(
+  content: Text('Payment Failed'),
+);
+
+CollectionReference<Map<String, dynamic>> snapshot = FirebaseFirestore.instance
+    .collection('notifications')
+    .doc(user?.uid)
+    .collection('list');
+
+class _NotificationScreenState extends State<NotificationScreen> {
+  String? premium;
+  User? user = FirebaseAuth.instance.currentUser;
+
+  setPremium() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      premium = prefs.getBool("premium").toString();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -23,48 +59,22 @@ class NotificationScreen extends StatelessWidget {
                           const TextStyle(color: Colors.black, fontSize: 20)))),
         ),
         body: SafeArea(
-            child: Padding(
-                padding: const EdgeInsets.all(15),
-                child: Expanded(
-                    flex: 1,
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.only(
-                          top: 0, left: 10, right: 10, bottom: 5),
-                      scrollDirection: Axis.vertical,
-                      child: Column(
-                        children:
-                            List.generate(notificationlist.length, (index) {
-                          return Container(
-                              margin: const EdgeInsets.only(bottom: 10),
-                              padding: const EdgeInsets.only(
-                                  top: 10, left: 10, right: 10, bottom: 10),
-                              decoration: const BoxDecoration(
-                                  color: Color.fromARGB(255, 255, 245, 220),
-                                  border: Border(
-                                    bottom: BorderSide(
-                                        width: 1.0,
-                                        color:
-                                            Color.fromARGB(255, 255, 245, 220)),
-                                  )),
-                              child: Padding(
-                                padding: const EdgeInsets.all(5),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      "Jumping jack",
-                                      style: GoogleFonts.notoSansMono(
-                                          color: Colors.black,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                  ],
-                                ),
-                              ));
-                        }),
-                      ),
-                    )))));
+          child: StreamBuilder<List<NotificationModel>>(
+            stream: NotificationServices(uID: user?.uid).getNotification,
+            builder: ((context, snapshot) {
+              if (snapshot.hasData) {
+                return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      return NotificationCard(
+                          notification: snapshot.data![index].message);
+                    });
+              } else {
+                return const CircularProgressIndicator();
+              }
+            }),
+          ),
+        ));
   }
 }
